@@ -50,6 +50,7 @@ PostgreSQL is used to store user accounts, course resources, discussion posts, a
 
 ## Architecture
 
+```
 Browser
 ↓
 Frontend (Vite + React + TypeScript)
@@ -57,6 +58,7 @@ Frontend (Vite + React + TypeScript)
 Backend API (Node.js + Express + TypeScript)
 ↓
 PostgreSQL Database
+```
 
 TODO: Replace this with an image
 
@@ -66,6 +68,7 @@ Uploaded documents such as past exams and worksheets are stored on the server, w
 
 ## Project Structure
 
+```
 ccwebsite/
 │
 ├── backend/
@@ -84,12 +87,12 @@ ccwebsite/
 │ └── package.json
 │
 └── README.
-
+```
 ---
 
 ## Getting Started
 
-## Development
+### Development
 
 ### Prerequisites
 
