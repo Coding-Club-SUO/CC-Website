@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "vitest run",
+    "test": "vitest",
+    "test:ui": "vitest --ui",
     "build": "tsc",
     "start": "node dist/index.js",
     "dev": "ts-node src/index.ts"
