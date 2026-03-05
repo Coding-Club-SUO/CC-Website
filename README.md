@@ -132,14 +132,22 @@ Clone the repository:
     git clone https://github.com/Coding-Club-SUO/CC-Website.git
     cd CC-Website
 
-`````
+    `````
 
 Once cloned depending on your role cd into the appropriate folder:
 
     ````bash
     cd backend # if you're working on backend.
     cd frontend # if you're working on frontend.
-`````
+    `````
+
+Set up environment variables:
+
+```bash
+cp .env.example .env
+```
+
+Open `.env` and fill in the required values.
 
 IMPORTANT: The main branch is protected so pushes have to be made on seperate branches before being merged into the main branch via pull requests. A pull-request must be approved before being merged.
 
