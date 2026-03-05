@@ -72,21 +72,45 @@ Uploaded documents such as past exams and worksheets are stored on the server, w
 ccwebsite/
 │
 ├── backend/
-│ ├── src/
-│ │ ├── routes/
-│ │ ├── controllers/
-│ │ ├── services/
-│ │ └── database/
-│ └── package.json
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── middleware/
+│   │   ├── routes/
+│   │   ├── services/
+│   │   ├── types/
+│   │   ├── tests/
+│   │   └── index.ts
+│   ├── prisma/
+│   ├── dist/
+│   ├── .env
+│   ├── .env.example
+│   ├── package.json
+│   ├── tsconfig.json
+│   ├── vitest.config.ts
+│   └── Dockerfile
 │
 ├── frontend/
-│ ├── src/
-│ │ ├── components/
-│ │ ├── pages/
-│ │ └── api/
-│ └── package.json
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── api/
+│   │   └── App.tsx
+│   ├── public/
+│   │   └── vite.svg
+│   ├── package.json
+│   ├── vite.config.ts
+│   ├── tsconfig.json
+│   └── Dockerfile
 │
-└── README.
+├── .github/
+│   └── workflows/
+│       ├── docker-compose-ci.yml
+│       └── node-ci.yml
+│
+├── docker-compose.yml
+├── .env.example
+└── README.md
 ```
 ---
 
