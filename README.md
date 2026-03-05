@@ -157,8 +157,11 @@ This command builds the Docker images and starts all the services. You'll see a 
 
 Once you see "Application startup complete" in the logs, open your browser and go to:
 
-- **Frontend**: http://localhost:3000 (the user-facing website)
-- **Backend**: http://localhost:8000 (the API)
+ Service  | URL                   |
+|----------|-----------------------|
+| Frontend | http://localhost:3000 |
+| Backend  | http://localhost:8000 |
+| Database | TBD        |
 
 ---
 
