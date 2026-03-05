@@ -162,7 +162,7 @@ Once you see "Application startup complete" in the logs, open your browser and g
 
 ---
 
-## Common Commands
+## Common Commands Docker
 
 ### Start the system
 
