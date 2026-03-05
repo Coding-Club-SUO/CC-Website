@@ -9,6 +9,7 @@
     "rootDir": "./src",
     "esModuleInterop": true,
     "types": ["node"],
+    "typeRoots": ["./node_modules/@types"],
     // File Layout
     // "rootDir": "./src",
     // "outDir": "./dist",
@@ -44,5 +45,7 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist", "prisma"]
 }
