@@ -73,3 +73,10 @@ export default defineConfig([
   },
 ])
 ```
+## Running without docker
+
+```
+cd frontend
+npm install
+npm run dev
+```
