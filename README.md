@@ -136,8 +136,6 @@ Docker is a container that holds all our code and dependencies so it runs the sa
    docker-compose --version
    ```
 
-````
-
 **For Linux:**
 
 ```bash
@@ -147,14 +145,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 ```
 
-### Step 2: Get the Code
-
-```bash
-git clone https://github.com/Coding-Club-SUO/CC-Website.git
-cd CC-Website
-```
-
-### Step 3: Start Everything
+### Step 2: Start Everything
 
 ```bash
 docker-compose up --build
@@ -162,7 +153,7 @@ docker-compose up --build
 
 This command builds the Docker images and starts all the services. You'll see a bunch of text scrolling - that's normal.
 
-### Step 4: Open It Up
+### Step 3: Open It Up
 
 Once you see "Application startup complete" in the logs, open your browser and go to:
 
@@ -170,4 +161,53 @@ Once you see "Application startup complete" in the logs, open your browser and g
 - **Backend**: http://localhost:8000 (the API)
 
 ---
-````
+
+## Common Commands
+
+### Start the system
+
+```bash
+# See all the logs in your terminal
+docker-compose up
+
+# Run it in the background
+docker-compose up -d
+
+# Rebuild everything from scratch
+docker-compose up --build
+```
+
+### Stop the system
+
+```bash
+# Stop everything
+docker-compose down
+
+# Stop and delete everything (this deletes your data!)
+docker-compose down -v
+```
+
+### Check what's happening
+
+```bash
+# See all logs from both backend and frontend
+docker-compose logs
+
+# Follow backend logs as they happen
+docker-compose logs -f backend
+
+# Follow frontend logs
+docker-compose logs -f frontend
+```
+
+### Restart things
+
+```bash
+# Restart everything
+docker-compose restart
+
+# Just restart the backend
+docker-compose restart backend
+```
+
+---
