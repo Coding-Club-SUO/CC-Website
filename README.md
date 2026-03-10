@@ -6,6 +6,8 @@ The project is developed by the Coding Club as a collaborative software engineer
 
 Access to course materials is restricted to members of the Computer Science Course Union (CSCU) to ensure resources remain available exclusively to students within the department.
 
+IMPORTANT: Please join the Discord server if you're an active contributor to this repository.
+
 ---
 
 ## Features
