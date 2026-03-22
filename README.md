@@ -1,4 +1,4 @@
-# Coding Club Resource Hub
+# Coding Club Website
 
 The Coding Club Resource Hub is a centralized platform for hosting student made and open-source course resources, worksheets, and academic discussions for Computer Science, Mathematics, Physics, and Statistics students.
 
