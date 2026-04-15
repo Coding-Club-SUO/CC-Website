@@ -1,19 +1,35 @@
-# Use Node.js base image
-FROM node:20-alpine
+# ── Stage 1: Build ────────────────────────────
+FROM eclipse-temurin:25-jdk-alpine AS builder
 
 # Set the working directory
 WORKDIR /app
 
-# Copy dependencies and install
-COPY package*.json .
-RUN npm install
+# Copy Gradle wrapper and config first (better layer caching)
+COPY gradlew .
+COPY gradle gradle
+COPY build.gradle .
+COPY settings.gradle .
 
-# Copy the rest of the backend code
-COPY . .
+# Download dependencies before copying source
+RUN ./gradlew dependencies --no-daemon || true
 
-# Expose the backend port
-EXPOSE 8000
+# Copy the rest of the source code
+COPY src src
 
-# Start the Express app
-RUN npm run build
-CMD ["node", "dist/index.js"]
+# Build the JAR, skipping tests
+RUN ./gradlew bootJar --no-daemon -x test
+
+# ── Stage 2: Run ──────────────────────────────
+FROM eclipse-temurin:25-jre-alpine
+
+# Set the working directory
+WORKDIR /app
+
+# Copy only the built JAR from the builder stage
+COPY --from=builder /app/build/libs/*.jar app.jar
+
+# Expose the Spring Boot port
+EXPOSE 8080
+
+# Start the Spring Boot app
+CMD ["java", "-jar", "app.jar"]
