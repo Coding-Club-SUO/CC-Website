@@ -8,13 +8,13 @@ The project is developed by the Coding Club as a collaborative software engineer
 
 ## Features
 
-- Blog for CMPS student opportunities on campus
+- Blog for CMPS student opportunities on campus.
 - Centralized repository for COSC, MATH, PHYS, and STAT course resources.
-- Past exams and student-created worksheets
-- Discussion pages for courses and topics
+- Past exams and student-created worksheets.
+- Discussion pages for courses and topics.
 - Authentication system for CSCU members and online tutoring services.
 - Faculty research pages highlighting research interests and opportunities.
-- Event and announcement pages for Coding Club, CSCU, and Girls in Tech (GIT)
+- Event and announcement pages for Coding Club, CSCU, and Girls in Tech (GIT).
 
 ---
 
@@ -54,7 +54,7 @@ Browser
 ↓
 Frontend (Vite + React + TypeScript)
 ↓
-Backend API (Node.js + Express + TypeScript)
+Backend API (Gradle + Spring Boot + Java)
 ↓
 PostgreSQL Database
 ```
