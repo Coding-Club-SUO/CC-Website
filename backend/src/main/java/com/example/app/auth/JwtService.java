@@ -53,7 +53,7 @@ public class JwtService {
     }
 
     // Extracts userid from any token
-    public String extractUserid(String token, boolean isRefreshToken) {
+    public String extractUserId(String token, boolean isRefreshToken) {
         SecretKey key = isRefreshToken ? refreshTokenKey : accessTokenKey;
         String type = isRefreshToken ? "Refresh" : "Access";
         try {
