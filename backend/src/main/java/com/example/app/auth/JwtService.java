@@ -38,10 +38,14 @@ public class JwtService {
     @PostConstruct
     public void init() {
         // This runs AFTER secretKeyString is injected
-        byte[] accessTokenKeyBytes = Decoders.BASE64URL.decode(this.accessTokenSecretKeyString);
-        this.accessTokenKey = Keys.hmacShaKeyFor(accessTokenKeyBytes);
-        byte[] refreshTokenKeyBytes = Decoders.BASE64URL.decode(this.refreshTokenSecretKeyString);
-        this.refreshTokenKey = Keys.hmacShaKeyFor(refreshTokenKeyBytes);
+        try {
+            byte[] accessTokenKeyBytes = Decoders.BASE64URL.decode(this.accessTokenSecretKeyString);
+            this.accessTokenKey = Keys.hmacShaKeyFor(accessTokenKeyBytes);
+            byte[] refreshTokenKeyBytes = Decoders.BASE64URL.decode(this.refreshTokenSecretKeyString);
+            this.refreshTokenKey = Keys.hmacShaKeyFor(refreshTokenKeyBytes);
+        } catch (Exception e) {
+            logger.error("Failed to extract access and refresh token secrets: {}", e);
+        }
     }
 
     public String generateAccessToken(String userid) {
