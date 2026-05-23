@@ -1,13 +1,11 @@
-package com.example.app.user;
+package com.example.app.user.models;
 
 import java.util.Collection;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.Entity;
-
-@Entity
+// Spring security wrapper/adapter
 public class SecurityUser implements UserDetails{
 
     private final User user;
