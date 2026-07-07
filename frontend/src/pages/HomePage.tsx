@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import './HomePage.css'
 import logo from '../assets/codingclub_ok_logo.jpeg'
+import InstagramEmbed from '../components/InstagramEmbed'
 
 const FEATURES = [
   {
@@ -16,7 +17,28 @@ const FEATURES = [
     text: 'Info on clubs & events, campus opportunities & advice, and professor research.',
   },
 ]
-
+const SOCIALS = [
+  { label: 'Linktree', 
+    url: 'https://linktr.ee/codingclub.suo',
+    icon: '🔗'
+  },
+  { label: 'Instagram',
+    url: 'https://www.instagram.com/codingclub.ok/',
+    icon: '📸'
+  },
+  {label: 'Campus Portal',
+    url: 'https://campus.hellorubric.com/?s=7801',
+    icon: '🎓'
+  },
+  { label: 'Sign-Up Form', 
+    url: null,
+    icon: '📝'
+  },
+  { label: 'Discord Server',
+    url: 'https://discord.gg/HWXnhqsxe',
+    icon: '💬'
+  }
+]
 export default function HomePage() {
   return (
     <div className="home">
@@ -54,6 +76,35 @@ export default function HomePage() {
           We welcome students from all disciplines. Join us to collaborate, learn, and grow
           your coding expertise while connecting with like-minded peers.
         </p>
+      </section>
+            <section className="highlight">
+        <h2 className="highlight-heading">From Our Community</h2>
+        <InstagramEmbed />
+      </section>
+      
+            <section className="socials">
+        <h2 className="socials-heading">Connect With Us</h2>
+        <div className="socials-grid">
+          {SOCIALS.map(social =>
+            social.url ? (
+              <a
+                key={social.label}
+                href={social.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-link"
+              >
+                <span className="social-icon">{social.icon}</span>
+                {social.label}
+              </a>
+            ) : (
+              <span key={social.label} className="social-link disabled">
+                <span className="social-icon">{social.icon}</span>
+                {social.label} · soon
+              </span>
+            )
+          )}
+        </div>
       </section>
     </div>
   )

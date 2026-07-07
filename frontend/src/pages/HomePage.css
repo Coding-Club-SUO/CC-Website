@@ -102,6 +102,63 @@
   line-height: 1.7;
   margin-bottom: 1rem;
 }
+/* Social Links */
+.socials {
+  text-align: center;
+  margin-top: 4rem;
+}
+.socials-heading {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.socials-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.95rem;
+  color: var(--text);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.social-link:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.social-link.disabled {
+border-color: var(--accent);
+transform: translateY(-2px);
+}
+.social-icon {
+  font-size: 1.1rem;
+}
+/* Community highlight */
+/* Community highlight */
+.highlight {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* centers the embed horizontally */
+}
+
+.highlight-heading {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Force Instagram's rendered post to center and stay smaller */
+.highlight .instagram-media {
+  margin: 0 auto !important;
+  max-width: 400px !important;
+}
 
 /* Stack the feature cards on narrow screens */
 @media (max-width: 640px) {
