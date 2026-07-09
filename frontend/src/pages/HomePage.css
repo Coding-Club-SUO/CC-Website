@@ -129,18 +129,18 @@
   color: var(--text);
   transition: border-color 0.15s ease, transform 0.15s ease;
 }
-.social-link:hover {
+.social-link:not(.disabled):hover {
   border-color: var(--accent);
   transform: translateY(-2px);
 }
 .social-link.disabled {
-border-color: var(--accent);
-transform: translateY(-2px);
+  color: var(--muted);
+  opacity: 0.6;
+  cursor: default;
 }
 .social-icon {
   font-size: 1.1rem;
 }
-/* Community highlight */
 /* Community highlight */
 .highlight {
   margin-top: 4rem;

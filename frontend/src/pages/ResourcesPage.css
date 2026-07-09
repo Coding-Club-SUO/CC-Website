@@ -109,6 +109,12 @@
     transform: translateY(-1px);
 }
 
+.download-btn.disabled {
+    background: var(--surface);
+    color: var(--muted);
+    cursor: default;
+    border: 1px solid var(--border);
+}
 .state-msg,
 .empty-state {
     text-align: center;
