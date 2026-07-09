@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.util.List;
 
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -11,11 +12,16 @@ import org.springframework.context.annotation.Configuration;
  * Seeds a small set of sample resources on startup so the frontend Resources
  * page shows real backend data. The insert is guarded by a count check, so it
  * is idempotent across restarts (which reuse the same schema via ddl-auto=update).
+ *
+ * <p>Seeding is enabled by default but can be turned off — e.g. in production, to
+ * avoid injecting placeholder data into the real database — by setting
+ * {@code app.seed-sample-resources=false}.
  */
 @Configuration
 public class ResourceSeeder {
 
     @Bean
+    @ConditionalOnProperty(name = "app.seed-sample-resources", havingValue = "true", matchIfMissing = true)
     CommandLineRunner seedResources(ResourceRepository repository) {
         return args -> {
             if (repository.count() > 0) {

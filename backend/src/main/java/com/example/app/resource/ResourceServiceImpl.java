@@ -3,6 +3,7 @@ package com.example.app.resource;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Default {@link ResourceService} implementation. Delegates persistence to the
@@ -18,6 +19,7 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<ResourceResponse> getAllResources() {
         return repository.findAll().stream()
                 .map(ResourceResponse::from)
