@@ -131,3 +131,18 @@
 .empty-sub {
   font-size: 0.9rem;
 }
+.upload-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  padding: 0.55rem 1.2rem;
+  background: var(--accent);
+  color: #0b0f19;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  transition: transform 0.15s ease;
+}
+
+.upload-link:hover {
+  transform: translateY(-2px);
+}

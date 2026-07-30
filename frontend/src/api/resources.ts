@@ -21,3 +21,27 @@ export async function getResources(): Promise<Resource[]> {
 
     return response.json()
 }
+export type NewResource = {
+    title: string
+    course: string
+    file: File
+}
+//Uploading a new resource (file and metadata) to the backend
+export async function uploadResource(input: NewResource): Promise<void> {
+    const formData = new FormData()
+    formData.append('title', input.title)
+    formData.append('course', input.course)
+    formData.append('file', input.file)
+
+    const response = await fetch('/api/resources', {
+        method: "POST",
+        body: formData
+        // the fetch is actual call to the backend endpoint
+})
+
+    if (!response.ok) {
+        throw new Error(`Upload Failed (status ${response.status})`)
+    }
+}
+    
+    

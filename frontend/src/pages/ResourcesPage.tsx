@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { getResources, type Resource } from '../api/resources'
 import './ResourcesPage.css'
+import { Link } from 'react-router-dom' 
 
 const COURSES = ['All', 'COSC', 'MATH', 'PHYS', 'STAT']
 
@@ -27,6 +28,7 @@ export default function ResourcesPage() {
       <p className="resources-subtitle">
         Past exams, worksheets, and study materials shared by students.
       </p>
+            <Link to="/resources/new" className="upload-link">+ Upload Resource</Link>
 
       <div className="filter-bar">
         {COURSES.map(course => (
