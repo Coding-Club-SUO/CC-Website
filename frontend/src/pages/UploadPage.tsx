@@ -3,8 +3,8 @@ import {useNavigate} from 'react-router-dom'
 import { uploadResource } from '../api/resources'
 import './UploadPage.css'
 
-const MAX_SIZE_MB = 20
-const ALLOWED_EXTENSIONS = ['pdf', 'png', 'jpg', 'jpeg', 'docx', 'pptx']
+const MAX_SIZE_MB = 10
+const ALLOWED_EXTENSIONS = ['pdf', 'docx', 'pptx']
 
 export default function UploadPage() {
   const navigate = useNavigate()
@@ -79,11 +79,11 @@ export default function UploadPage() {
           <span className="field-label">File</span>
           <input
             type="file"
-            accept=".pdf,.png,.jpg,.jpeg,.docx,.pptx"
+            accept=".pdf,s.docx,.pptx"
             onChange={e => setFile(e.target.files?.[0] ?? null)}
           />
           <span className="field-hint">
-            Accepted: PDF, PNG, JPEG, DOCX, PPTX · max {MAX_SIZE_MB} MB
+            Accepted: PDF, DOCX, PPTX · max {MAX_SIZE_MB} MB
           </span>
         </label>
 
