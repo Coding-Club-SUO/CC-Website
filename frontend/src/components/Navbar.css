@@ -1,0 +1,39 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+}
+
+.nav-brand {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.nav-brand-accent {
+  color: var(--accent);
+}
+
+.nav-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  color: var(--muted);
+  font-size: 0.95rem;
+  transition: color 0.15s ease;
+}
+
+.nav-link:hover {
+  color: var(--text);
+}
+
+/* react-router adds this class automatically to the link of the current page */
+.nav-link.active {
+  color: var(--accent);
+}
