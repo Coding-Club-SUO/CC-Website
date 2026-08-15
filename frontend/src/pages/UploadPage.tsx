@@ -10,6 +10,7 @@ export default function UploadPage() {
   const navigate = useNavigate()
   const [title, setTitle] = useState('')
   const [course, setCourse] = useState('')
+  const [uploader, setUploader] = useState('')
   const [file, setFile] = useState<File | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [submitting, setSubmitting] = useState(false)
@@ -17,6 +18,7 @@ export default function UploadPage() {
   function validate(): string | null {
     if (!title.trim()) return 'Please enter a title.'
     if (!course.trim()) return 'Please enter a course.'
+    if (!uploader.trim()) return 'Please enter your name.'
     if (!file) return 'Please choose a file to upload.'
     const ext = file.name.split('.').pop()?.toLowerCase() ?? ''
    if (!ALLOWED_EXTENSIONS.includes(ext)) {
@@ -38,7 +40,7 @@ export default function UploadPage() {
     setError(null)
     setSubmitting(true)
     try {
-      await uploadResource({ title, course, file: file! })
+      await uploadResource({ title, course, uploader, file: file! })
       navigate('/resources')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Upload failed. Please try again.')
@@ -76,10 +78,20 @@ export default function UploadPage() {
         </label>
 
         <label className="field">
+          <span className="field-label">Your name</span>
+          <input
+            type="text"
+            value={uploader}
+            onChange={e => setUploader(e.target.value)}
+            placeholder="e.g. Jane Doe"
+          />
+        </label>
+
+        <label className="field">
           <span className="field-label">File</span>
           <input
             type="file"
-            accept=".pdf,s.docx,.pptx"
+            accept=".pdf,.docx,.pptx"
             onChange={e => setFile(e.target.files?.[0] ?? null)}
           />
           <span className="field-hint">

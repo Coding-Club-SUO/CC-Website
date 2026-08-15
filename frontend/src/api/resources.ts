@@ -24,6 +24,8 @@ export async function getResources(): Promise<Resource[]> {
 export type NewResource = {
     title: string
     course: string
+    // TODO: becomes the logged-in user once auth exists; a plain name for now.
+    uploader: string
     file: File
 }
 //Uploading a new resource (file and metadata) to the backend
@@ -31,6 +33,8 @@ export async function uploadResource(input: NewResource): Promise<void> {
     const formData = new FormData()
     formData.append('title', input.title)
     formData.append('course', input.course)
+    // the backend requires uploader — a bad/blank value is rejected with 400
+    formData.append('uploader', input.uploader)
     formData.append('file', input.file)
 
     const response = await fetch('/api/resources', {
