@@ -40,7 +40,7 @@ class ResourceApiIntegrationTest {
     void seedFixture() {
         repository.deleteAll();
         repository.save(new Resource("Fixture Study Guide", "COSC 111", "Test Uploader",
-                Instant.parse("2026-01-02T03:04:05Z"), "https://example.com/guide.pdf"));
+                Instant.parse("2026-01-02T03:04:05Z")));
     }
 
     @Test

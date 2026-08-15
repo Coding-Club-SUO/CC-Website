@@ -16,6 +16,10 @@ import org.springframework.context.annotation.Configuration;
  * <p>Seeding is enabled by default but can be turned off — e.g. in production, to
  * avoid injecting placeholder data into the real database — by setting
  * {@code app.seed-sample-resources=false}.
+ *
+ * <p>These are metadata-only rows with no backing file, so they list normally but
+ * expose no download link (the frontend renders them as unavailable). Real,
+ * downloadable rows come from uploads via {@code POST /api/resources}.
  */
 @Configuration
 public class ResourceSeeder {
@@ -29,13 +33,13 @@ public class ResourceSeeder {
             }
             repository.saveAll(List.of(
                     new Resource("Midterm 1 Practice Problems", "COSC 121", "Jane Doe",
-                            Instant.parse("2026-06-18T14:30:00Z"), "#"),
+                            Instant.parse("2026-06-18T14:30:00Z")),
                     new Resource("Final Exam Review Sheet", "MATH 151", "John Smith",
-                            Instant.parse("2026-06-20T09:00:00Z"), "#"),
+                            Instant.parse("2026-06-20T09:00:00Z")),
                     new Resource("Lab 3 Solutions", "PHYS 101", "Alice Chen",
-                            Instant.parse("2026-06-22T16:45:00Z"), "#"),
+                            Instant.parse("2026-06-22T16:45:00Z")),
                     new Resource("Regression Cheat Sheet", "STAT 260", "Sam Lee",
-                            Instant.parse("2026-06-24T11:15:00Z"), "#")));
+                            Instant.parse("2026-06-24T11:15:00Z"))));
         };
     }
 }
