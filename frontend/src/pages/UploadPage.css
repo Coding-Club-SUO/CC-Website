@@ -1,0 +1,87 @@
+.upload-page {
+    max-width: 560px;
+    margin: 2.5rem auto;
+    padding: 0 1.5rem;
+}
+
+.upload-page h1{
+    font-size: 2rem;
+    margin-bottom: 0.25rem;
+}
+
+.upload-subtitle{
+    color: var(--muted);
+    margin-bottom: 2rem;
+}
+
+.upload-form { 
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.field{ 
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.field-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+}
+
+.field input[type="text"] {
+  padding: 0.6rem 0.8rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-size: 0.95rem;
+}
+
+.field input[type="text"]:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.field input[type="file"] {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.field-hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+
+.file-selected {
+  font-size: 0.9rem;
+  color: var(--accent);
+}
+
+.form-error {
+  color: #f87171;
+  font-size: 0.9rem;
+}
+
+.submit-btn {
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: #0b0f19;
+  font-weight: 600;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}

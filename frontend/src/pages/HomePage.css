@@ -1,0 +1,168 @@
+.home {
+  max-width: 900px;
+  margin: 4rem auto;
+  padding: 0 1.5rem;
+}
+
+/* Hero */
+.hero {
+  text-align: center;
+  margin-bottom: 4rem;
+}
+
+.hero-logo {
+  width: 90px;
+  height: 90px;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+}
+
+.hero-title {
+  font-size: 2.75rem;
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+
+.hero-code {
+  font-family: 'SF Mono', Menlo, Consolas, monospace;
+  color: var(--accent);
+  margin-bottom: 1.5rem;
+}
+
+.hero-sub {
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 520px;
+  margin: 0 auto 2rem;
+}
+
+.hero-btn {
+  display: inline-block;
+  padding: 0.75rem 1.5rem;
+  background: var(--accent);
+  color: #0b0f19;
+  font-weight: 600;
+  border-radius: 8px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.hero-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.25);
+}
+
+/* Feature cards */
+.features {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 4rem;
+}
+
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.feature-card:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+.feature-title {
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+  color: var(--accent);
+}
+
+.feature-text {
+  font-size: 0.9rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* About */
+.about {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 2.5rem;
+}
+
+.about-heading {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.about-text {
+  color: var(--muted);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+/* Social Links */
+.socials {
+  text-align: center;
+  margin-top: 4rem;
+}
+.socials-heading {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+.socials-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 1rem;
+}
+.social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.3rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  font-size: 0.95rem;
+  color: var(--text);
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+.social-link:not(.disabled):hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+.social-link.disabled {
+  color: var(--muted);
+  opacity: 0.6;
+  cursor: default;
+}
+.social-icon {
+  font-size: 1.1rem;
+}
+/* Community highlight */
+.highlight {
+  margin-top: 4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* centers the embed horizontally */
+}
+
+.highlight-heading {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Force Instagram's rendered post to center and stay smaller */
+.highlight .instagram-media {
+  margin: 0 auto !important;
+  max-width: 400px !important;
+}
+
+/* Stack the feature cards on narrow screens */
+@media (max-width: 640px) {
+  .features {
+    grid-template-columns: 1fr;
+  }
+}
