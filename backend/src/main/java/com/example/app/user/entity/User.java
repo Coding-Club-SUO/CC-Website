@@ -1,11 +1,13 @@
-package com.example.app.user.models;
+package com.example.app.user.entity;
 
 import java.util.Date;
 import java.util.EnumSet;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.example.app.common.Faculty;
@@ -25,6 +27,7 @@ import jakarta.validation.constraints.Size;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
+@EnableJpaAuditing
 @Table(name = "users")
 public class User implements UserDetails {
 
@@ -49,7 +52,7 @@ public class User implements UserDetails {
     private Faculty faculty = Faculty.NA;
     @Size(max = 250, message = "Bio cannot exceed 250 characters")
     @Nullable
-    @Column(nullable = false)
+    @Column(nullable = true, length = 250)
     private String bio;
     @CreatedDate
     @Column(nullable = false, updatable = false)
@@ -64,10 +67,10 @@ public class User implements UserDetails {
 
     @ElementCollection
     @Enumerated(EnumType.STRING)
-    private EnumSet<Permissions> authorities = EnumSet.of(Permissions.CREATE_POSTS, Permissions.EDIT_POSTS, 
+    private Set<Permissions> authorities = new HashSet<>(EnumSet.of(Permissions.CREATE_POSTS, Permissions.EDIT_POSTS,
         Permissions.DELETE_POSTS, Permissions.CREATE_THREAD,
-        Permissions.DELETE_THREAD, Permissions.EDIT_THREAD, 
-        Permissions.EDIT_ACCOUNT);
+        Permissions.DELETE_THREAD, Permissions.EDIT_THREAD,
+        Permissions.EDIT_ACCOUNT));
 
     private Boolean expired = false; //Unused account flag
     private Boolean locked = false; //Block login attempts.
@@ -95,7 +98,7 @@ public class User implements UserDetails {
     public Integer getComments() { return comments; }
     public Integer getPosts() { return posts; }
     @Override
-    public EnumSet<Permissions> getAuthorities() { return authorities; }
+    public Set<Permissions> getAuthorities() { return authorities; }
     public Boolean getExpired() { return expired; }
     public Boolean getLocked() { return locked; }
 
@@ -111,7 +114,7 @@ public class User implements UserDetails {
     public void setActiveIn(Set<String> activeIn) { this.activeIn = activeIn; }
     public void setComments(Integer comments) { this.comments = comments; }
     public void setPosts(Integer posts) { this.posts = posts; }
-    public void setAuthorities(EnumSet<Permissions> authorities) { this.authorities = authorities; }
+    public void setAuthorities(Set<Permissions> authorities) { this.authorities = authorities; }
     public void setExpired(Boolean expired) { this.expired = expired; }
     public void setLocked(Boolean locked) { this.locked = locked; }
 }

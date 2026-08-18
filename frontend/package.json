@@ -10,9 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "axios": "^1.19.0",
+    "jwt-decode": "^4.0.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6",
-    "react-router-dom": "^7.18.1"
+    "react-hook-form": "^7.85.0",
+    "react-router-dom": "^7.18.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

@@ -1,4 +1,4 @@
-package com.example.app.user.models;
+package com.example.app.user.dto;
 
 import com.example.app.common.Faculty;
 

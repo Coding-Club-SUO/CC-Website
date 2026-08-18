@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
  * its email.
  *
  */
-public class VerificationException extends AuthenticationException {
+public class BadCredentialsException extends AuthenticationException {
         
 	@Serial
 	private static final long serialVersionUID = 1410688585992297006L;
@@ -25,7 +25,7 @@ public class VerificationException extends AuthenticationException {
 	 * Constructs a <code>VerificationException</code> with the specified message.
 	 * @param msg the detail message.
 	 */
-	public VerificationException(String msg) {
+	public BadCredentialsException(String msg) {
 		super(msg);
 		this.name = null;
 	}
@@ -36,17 +36,17 @@ public class VerificationException extends AuthenticationException {
 	 * @param msg the detail message.
 	 * @param cause root cause
 	 */
-	public VerificationException(String msg, Throwable cause) {
+	public BadCredentialsException(String msg, Throwable cause) {
 		super(msg, cause);
 		this.name = null;
 	}
 
-	private VerificationException(String msg, String name) {
+	private BadCredentialsException(String msg, String name) {
 		super(msg);
 		this.name = name;
 	}
 
-	private VerificationException(String msg, String name, Throwable cause) {
+	private BadCredentialsException(String msg, String name, Throwable cause) {
 		super(msg, cause);
 		this.name = name;
 	}
@@ -54,22 +54,22 @@ public class VerificationException extends AuthenticationException {
 	/**
 	 * Construct an exception based on a specific id
 	 * @param id the invalid id
-	 * @return the {@link VerificationException}
+	 * @return the {@link BadCredentialsException}
 	 * @since 7.0
 	 */
-	public static VerificationException fromid(String id) {
-		return new VerificationException(DEFAULT_USER_NOT_FOUND_MESSAGE, id);
+	public static BadCredentialsException fromid(String id) {
+		return new BadCredentialsException(DEFAULT_USER_NOT_FOUND_MESSAGE, id);
 	}
 
 	/**
 	 * Construct an exception based on a specific id
 	 * @param id the invalid id
 	 * @param cause any underlying cause
-	 * @return the {@link VerificationException}
+	 * @return the {@link BadCredentialsException}
 	 * @since 7.0
 	 */
-	public static VerificationException fromid(String id, Throwable cause) {
-		return new VerificationException(DEFAULT_USER_NOT_FOUND_MESSAGE, id, cause);
+	public static BadCredentialsException fromid(String id, Throwable cause) {
+		return new BadCredentialsException(DEFAULT_USER_NOT_FOUND_MESSAGE, id, cause);
 	}
 
 	/**

@@ -1,18 +1,22 @@
-# ---------- Stage 1: Build ----------
-FROM node:20-alpine AS builder
+# ---------- Stage 1: Base/deps ----------
+FROM node:20-alpine AS base
 WORKDIR /app
-
 COPY package*.json ./
 RUN npm ci
 
+# ---------- Dev stage ----------
+FROM base AS dev
+COPY . .
+EXPOSE 5173
+CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+
+# ---------- Build stage ----------
+FROM base AS builder
 COPY . .
 RUN npm run build
 
-# ---------- Stage 2: Run ----------
+# ---------- Production stage ----------
 FROM nginx:alpine AS runner
-
-# Copy Vite's build output to Nginx's serve directory
 COPY --from=builder /app/dist /usr/share/nginx/html
-
-EXPOSE 3000
+EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
