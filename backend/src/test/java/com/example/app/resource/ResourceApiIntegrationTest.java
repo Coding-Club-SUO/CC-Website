@@ -49,7 +49,7 @@ class ResourceApiIntegrationTest {
                 .baseUrl("http://localhost:" + port)
                 .build();
 
-        client.get().uri("/api/resources")
+        client.get().uri("/api/v1/resources")
                 .exchange()
                 // Reachable without a JWT -> the permitAll rule is in effect.
                 .expectStatus().isOk()

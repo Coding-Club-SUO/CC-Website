@@ -10,7 +10,7 @@ export type Resource = {
 }
 
 export async function getResources(): Promise<Resource[]> {
-    const response = await api.get<Resource[]>('/api/v1/resources')
+    const response = await api.get<Resource[]>('/resources')
     
     return response.data
 }
