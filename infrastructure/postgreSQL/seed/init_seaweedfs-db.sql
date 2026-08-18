@@ -1,0 +1,1 @@
+CREATE DATABASE seaweedfs_filer;

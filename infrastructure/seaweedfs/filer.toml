@@ -1,0 +1,8 @@
+[postgres2]
+enabled = true
+hostname = "postgres"
+port = 5432
+database = "seaweedfs_filer"
+sslmode = "disable"
+connection_max_idle = 5
+connection_max_open = 75

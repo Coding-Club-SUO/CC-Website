@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * REST controller (the "C" in MVC) exposing read access to course resources.
- * Consumed by the frontend Resources page via {@code GET /api/resources}.
+ * Consumed by the frontend Resources page via {@code GET /api/v1/resources}.
  */
 @RestController
-@RequestMapping("/api/resources")
+@RequestMapping("/api/v1/resources")
 public class ResourceController {
 
     private final ResourceService resourceService;

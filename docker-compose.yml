@@ -1,27 +1,133 @@
 # /docker-compose.yml
 services:
-  # 1. Backend Service (Express)
+  # 1. Backend Service (SpringBoot)
+
   backend:
     build:
-      context: ./backend # Use the backend directory as the build context
+      context: ./backend
       dockerfile: Dockerfile
+    env_file:
+      - .env
     ports:
-      - "8000:8000" # Map host port 8000 to container port 8000
+      - "8000:8000"
     volumes:
-      # Mount the backend directory for live development reloading (optional)
       - ./backend:/code
     restart: always
 
-  # 2. Frontend Service (Next.js)
+  # 2. Frontend Service (Vite)
   frontend:
     build:
-      context: ./frontend # Use the frontend directory as the build context
+      context: ./frontend
+      target: dev
     ports:
-      - "3000:3000" # Map host port 3000 to container port 3000
-    command: npm run dev # Start the Next.js development server
+      - "5173:5173"
     volumes:
-      - ./frontend:/frontend
-      - /frontend/node_modules # Important to avoid host node_modules issues
+      - ./frontend:/app
+      - /app/node_modules
     depends_on:
-      - backend # Start the frontend only after the backend is ready
+      - backend
     restart: always
+
+  redis:
+    image: redis:alpine
+    container_name: redis-1
+    env_file:
+      - .env
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: >
+      redis-server
+      --requirepass ${REDIS_PASSWORD}
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres-1
+    restart: always
+    env_file:
+      - .env
+    ports:
+      - "15432:5432"
+    volumes:
+      - pg_data:/var/lib/postgresql/data
+      - ./infrastructure/postgreSQL/seed:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 15s
+    networks:
+      - default
+
+  seaweedfs-master:
+    image: chrislusf/seaweedfs
+    container_name: seaweedfs-master
+    ports:
+      - "9333:9333"
+      - "19333:19333"
+    command: "master -ip=seaweedfs-master -ip.bind=0.0.0.0"
+    volumes:
+      - seaweedfs_master_data:/data
+    restart: always
+    networks:
+      - default
+
+  seaweedfs-volume:
+    image: chrislusf/seaweedfs
+    container_name: seaweedfs-volume
+    ports:
+      - "8080:8080"
+    command: 'volume -mserver="seaweedfs-master:9333" -ip.bind=0.0.0.0 -port=8080 -dir=/data -max=100'
+    depends_on:
+      - seaweedfs-master
+    volumes:
+      - seaweedfs_volume_data:/data
+    restart: always
+    networks:
+      - default
+
+  seaweedfs-filer:
+    image: chrislusf/seaweedfs
+    container_name: seaweedfs-filer
+    ports:
+      - "8888:8888"
+    env_file:
+      - .env
+    environment:
+      WEED_POSTGRES2_USERNAME: ${POSTGRES_USER}
+      WEED_POSTGRES2_PASSWORD: ${POSTGRES_PASSWORD}
+    command: 'filer -master="seaweedfs-master:9333" -ip.bind=0.0.0.0'
+    depends_on:
+      postgres:
+        condition: service_healthy
+      seaweedfs-volume:
+        condition: service_started
+    volumes:
+      - ./infrastructure/seaweedfs/filer.toml:/etc/seaweedfs/filer.toml
+    restart: always
+    networks:
+      - default
+
+  seaweedfs-s3:
+    image: chrislusf/seaweedfs
+    container_name: seaweedfs-s3
+    ports:
+      - "8333:8333"
+    command: 's3 -filer="seaweedfs-filer:8888" -ip.bind=0.0.0.0'
+    depends_on:
+      - seaweedfs-filer
+    restart: always
+    networks:
+      - default
+
+volumes:
+  redis_data:
+  pg_data:
+  seaweedfs_master_data:
+  seaweedfs_volume_data:
+
+networks:
+  default:
+    driver: bridge
