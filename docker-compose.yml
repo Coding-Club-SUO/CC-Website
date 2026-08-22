@@ -14,18 +14,21 @@ services:
       - ./backend:/code
     restart: always
 
-  # 2. Frontend Service (Vite)
+  # 2. Frontend Service (Next.js)
   frontend:
     build:
       context: ./frontend
       target: dev
+    env_file:
+      - .env
     ports:
-      - "5173:5173"
+      - "3000:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
     depends_on:
       - backend
+      - redis
     restart: always
 
   redis:

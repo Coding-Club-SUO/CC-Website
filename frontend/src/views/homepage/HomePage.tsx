@@ -1,7 +1,8 @@
-import { Link } from 'react-router-dom'
 import './HomePage.css'
-import logo from '../assets/codingclub_ok_logo.jpeg'
-import InstagramEmbed from '../components/InstagramEmbed'
+import Link from 'next/link'
+import Image from 'next/image'
+import logo from '../../assets/codingclub_ok_logo.jpeg'
+import InstagramEmbed from '../../components/InstagramEmbed'
 
 const FEATURES = [
   {
@@ -43,14 +44,14 @@ export default function HomePage() {
   return (
     <div className="home">
       <section className="hero">
-        <img src={logo} className="hero-logo" alt="Coding Club logo" />
+        <Image src={logo} className="hero-logo" alt="Coding Club logo" priority />
         <h1 className="hero-title">Coding Club Resource Hub</h1>
         <p className="hero-code">// learn. share. build. together.</p>
         <p className="hero-sub">
           A central place for COSC, MATH, PHYS, and STAT students to share and find
           course resources.
         </p>
-        <Link to="/resources" className="hero-btn">Browse Resources →</Link>
+        <Link href="/resources" className="hero-btn">Browse Resources →</Link>
       </section>
 
       <section className="features">

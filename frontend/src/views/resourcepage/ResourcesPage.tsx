@@ -1,21 +1,13 @@
-import { useState, useEffect } from 'react'
-import { getResources, type Resource } from '../api/resources'
+"use client"
+
 import './ResourcesPage.css'
+import { useState } from 'react'
+import type { Resource } from '../../api/resources'
 
 const COURSES = ['All', 'COSC', 'MATH', 'PHYS', 'STAT']
 
-export default function ResourcesPage() {
-  const [resources, setResources] = useState<Resource[]>([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+export default function ResourcesPage({ resources }: { resources: Resource[] }) {
   const [selectedCourse, setSelectedCourse] = useState('All')
-
-  useEffect(() => {
-    getResources()
-      .then(data => setResources(data))
-      .catch(err => setError(err.message))
-      .finally(() => setLoading(false))
-  }, [])
 
   const filtered = selectedCourse === 'All'
     ? resources
@@ -40,14 +32,7 @@ export default function ResourcesPage() {
         ))}
       </div>
 
-      {loading ? (
-        <p className="state-msg">Loading resources…</p>
-      ) : error ? (
-        <div className="empty-state">
-          <p className="empty-title">Couldn't load resources</p>
-          <p className="empty-sub">Something went wrong. Please try again later.</p>
-        </div>
-      ) : filtered.length === 0 ? (
+      {filtered.length === 0 ? (
         <div className="empty-state">
           <p className="empty-title">No resources uploaded yet</p>
           <p className="empty-sub">Be the first to share something for this course.</p>

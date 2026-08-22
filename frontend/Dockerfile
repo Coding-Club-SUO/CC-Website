@@ -7,8 +7,8 @@ RUN npm ci
 # ---------- Dev stage ----------
 FROM base AS dev
 COPY . .
-EXPOSE 5173
-CMD ["npm", "run", "dev", "--", "--host", "0.0.0.0"]
+EXPOSE 3000
+CMD ["sh", "-c", "npm ci && npm run dev -- --hostname 0.0.0.0"]
 
 # ---------- Build stage ----------
 FROM base AS builder
@@ -16,7 +16,11 @@ COPY . .
 RUN npm run build
 
 # ---------- Production stage ----------
-FROM nginx:alpine AS runner
-COPY --from=builder /app/dist /usr/share/nginx/html
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=builder /app/.next/standalone ./
+COPY --from=builder /app/.next/static ./.next/static
+COPY --from=builder /app/public ./public
+EXPOSE 3000
+CMD ["node", "server.js"]
