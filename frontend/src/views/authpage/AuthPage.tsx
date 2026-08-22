@@ -1,6 +1,8 @@
+"use client";
+
 import { useState } from 'react';
-import { LoginForm } from '../components/login/LoginForm';
-import { RegisterForm } from '../components/login/RegisterForm';
+import { LoginForm } from '../../components/login/LoginForm';
+import { RegisterForm } from '../../components/login/RegisterForm';
 
 type AuthView = 'login' | 'register';
 
@@ -25,3 +27,5 @@ export const AuthPage = () => {
     </div>
   );
 };
+
+export default AuthPage;

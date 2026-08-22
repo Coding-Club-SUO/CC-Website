@@ -9,10 +9,10 @@ import {
   useCallback,
 } from "react";
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
-import { useNavigate, useLocation } from "react-router-dom";
+import { usePathname, useRouter } from "next/navigation";
 import { jwtDecode, type JwtPayload } from "jwt-decode";
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000/api/v1";
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1";
 
 interface AuthProviderProps {
   children: ReactNode;
@@ -32,7 +32,7 @@ interface UserInformation {
   photoLink: string;
   faculty: string;
   bio: string;
-  activeIn:  Set<String> ;
+  activeIn:  Set<string> ;
   dateJoined: Date;
   posts: number;
   comments: number;
@@ -90,8 +90,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [tokenData, setTokenData] = useState<TokenPayload | null>(null);
   const [postAuthRedirect, setPostAuthRedirect] = useState<string | null>(null);
   const [isRestoring, setIsRestoring] = useState(true);
-  const router = useNavigate();
-  const location = useLocation();
+  const router = useRouter();
+  const pathname = usePathname();
 
   const attachAccessToken = useCallback((config: InternalAxiosRequestConfig) => {
     if (typeof window !== "undefined") {
@@ -174,7 +174,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
           redirect !== landingPath &&
           (landingPath === "/" || landingPath === "/login")
         ) {
-          router(redirect);
+          router.push(redirect);
         }
       } catch (error) {
         console.log("Session not restored please login: ", error);
@@ -194,7 +194,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const activePostAuthRedirect =
     postAuthRedirect &&
-    (location.pathname === "/" || location.pathname === "/login")
+    (pathname === "/" || pathname === "/login")
       ? postAuthRedirect
       : null;
 
@@ -227,7 +227,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       sessionStorage.removeItem("redirectAfterSessionRestored");
 
       if (redirectOnSuccess && pendingRedirect) {
-        router(pendingRedirect);
+        router.push(pendingRedirect);
       }
       return {
           isSuccess: true,
@@ -294,7 +294,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
       console.log("Account registration successful");
 
-      router(destination);
+      router.push(destination);
       return {
         isSuccess: true,
         message: "Registration successful!",

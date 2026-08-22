@@ -1,3 +1,5 @@
+"use client"
+
 import { useEffect } from 'react'
 
 // Instagram's embed.js attaches this global object when it loads.

@@ -1,5 +1,3 @@
-import { api } from "../context/AuthContext"
-
 export type Resource = {
     id: number
     title: string
@@ -10,7 +8,13 @@ export type Resource = {
 }
 
 export async function getResources(): Promise<Resource[]> {
-    const response = await api.get<Resource[]>('/resources')
-    
-    return response.data
-}
+    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1"
+    const response = await fetch(`${baseUrl}/resources`, {
+        next: { tags: ['resources'] }
+    })
+
+    if (!response.ok) {
+        throw new Error(`Resources request failed with status ${response.status}`)
+    }
+    return response.json() as Promise<Resource[]>
+} 
