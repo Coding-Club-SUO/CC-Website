@@ -2,7 +2,7 @@
 
 import './ResourcesPage.css'
 import { useState } from 'react'
-import type { Resource } from '../../api/resources'
+import type { Resource } from '../../api/resources/resources'
 
 const COURSES = ['All', 'COSC', 'MATH', 'PHYS', 'STAT']
 

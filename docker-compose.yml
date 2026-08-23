@@ -9,9 +9,11 @@ services:
     env_file:
       - .env
     ports:
-      - "8000:8000"
+      - "${SPRING_PORT}:8000"
     volumes:
       - ./backend:/code
+    depends_on:
+      - redis
     restart: always
 
   # 2. Frontend Service (Next.js)
@@ -22,7 +24,7 @@ services:
     env_file:
       - .env
     ports:
-      - "3000:3000"
+      - "${NEXT_PORT}:3000"
     volumes:
       - ./frontend:/app
       - /app/node_modules
@@ -51,7 +53,7 @@ services:
     env_file:
       - .env
     ports:
-      - "15432:5432"
+      - "5432:5432"
     volumes:
       - pg_data:/var/lib/postgresql/data
       - ./infrastructure/postgreSQL/seed:/docker-entrypoint-initdb.d

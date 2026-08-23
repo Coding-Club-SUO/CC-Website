@@ -1,5 +1,5 @@
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { useAuth } from '../context/AuthContext';
+import { register as authRegister } from '@/api/auth/auth';
 import './AuthForm.css';
 
 interface RegisterInputs {
@@ -15,7 +15,6 @@ interface RegisterFormProps {
 }
 
 export const RegisterForm = ({ onSwitchToLogin }: RegisterFormProps) => {
-  const { register: authRegister } = useAuth();
   const {
     register,
     handleSubmit,
