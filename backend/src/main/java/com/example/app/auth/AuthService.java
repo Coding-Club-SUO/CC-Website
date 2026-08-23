@@ -60,9 +60,11 @@ public class AuthService {
         }
         
         String userId = jwtService.extractUserId(refreshToken, true);
+        long tokenTTL = jwtService.extractTTL(refreshToken, true);
         User user = userService.loadUserById(userId);
         String accessToken = jwtService.generateAccessToken(userId, user.getAuthorities());
-        return new AuthResponse(refreshToken, accessToken, userMapper.toDto(user));
+        String newRefreshToken = jwtService.generateRefreshToken(userId, tokenTTL);
+        return new AuthResponse(newRefreshToken, accessToken, tokenTTL, userMapper.toDto(user));
     }
     
     public void logoutUser(String accessToken, String refreshToken) {

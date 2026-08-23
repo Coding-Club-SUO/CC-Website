@@ -1,5 +1,5 @@
 import { useForm, type SubmitHandler } from 'react-hook-form';
-import { useAuth } from "../context/AuthContext";
+import { login } from '@/api/auth/auth';
 import './AuthForm.css';
 
 interface LoginInputs {
@@ -13,7 +13,6 @@ interface LoginFormProps {
 }
 
 export const LoginForm = ({ onSwitchToRegister }: LoginFormProps) => {
-  const { login } = useAuth();
   const {
     register,
     handleSubmit,

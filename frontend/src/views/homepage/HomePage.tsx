@@ -1,7 +1,7 @@
 import './HomePage.css'
 import Link from 'next/link'
 import Image from 'next/image'
-import logo from '../../assets/codingclub_ok_logo.jpeg'
+import logo from '../../public/codingclub_ok_logo.jpeg'
 import InstagramEmbed from '../../components/InstagramEmbed'
 
 const FEATURES = [

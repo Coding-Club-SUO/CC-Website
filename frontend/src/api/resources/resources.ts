@@ -8,7 +8,7 @@ export type Resource = {
 }
 
 export async function getResources(): Promise<Resource[]> {
-    const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000/api/v1"
+    const baseUrl = process.env.API_BASE_URL ?? "http://backend:8000/api/v1"
     const response = await fetch(`${baseUrl}/resources`, {
         next: { tags: ['resources'] }
     })

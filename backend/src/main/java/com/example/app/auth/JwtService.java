@@ -119,8 +119,15 @@ public class JwtService {
                 REFRESH_TOKEN_TYPE
         );
     }
+    
+    public String generateRefreshToken(String userid, long ttl) {
+        return generateToken(
+                userid, null, 
+                refreshTokenKey, ttl, 
+                REFRESH_TOKEN_TYPE
+        );
+    }
 
-    // Extracts userid from any token
     public String extractUserId(String token, boolean isRefreshToken) {
         SecretKey key = isRefreshToken ? refreshTokenKey : accessTokenKey;
         String type = isRefreshToken ? REFRESH_TOKEN_TYPE : ACCESS_TOKEN_TYPE;
@@ -129,6 +136,24 @@ public class JwtService {
         } catch (JwtException e) {
             logger.warn("Failed to extract userid: {}", e.getMessage());
             return null;
+        }
+    }
+    
+    public long extractTTL(String token, boolean isRefreshToken) {
+        SecretKey key = isRefreshToken ? refreshTokenKey : accessTokenKey;
+        String type = isRefreshToken ? REFRESH_TOKEN_TYPE : ACCESS_TOKEN_TYPE;
+
+        try {
+            Date expiration = extractAllClaims(token, key, type).getExpiration();
+            if (expiration == null) {
+                return 0;
+            }
+
+            long ttlInSeconds = (expiration.getTime() - System.currentTimeMillis()) / 1000;
+            return Math.max(0, ttlInSeconds);
+        } catch (JwtException | IllegalArgumentException e) {
+            logger.warn("Failed to extract token expiration: {}", e.getMessage());
+            return 0;
         }
     }
 
