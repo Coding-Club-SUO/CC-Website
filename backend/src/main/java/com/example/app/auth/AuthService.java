@@ -9,6 +9,9 @@ import com.example.app.user.dto.UserCreate;
 import com.example.app.user.exceptions.BadCredentialsException;
 import com.example.app.user.entity.User;
 import com.example.app.user.mappers.UserMapper;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -19,16 +22,18 @@ public class AuthService {
     private final JwtService jwtService;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
-    
+    private final ExecutorService cryptoExecutor;
     
     public AuthService(
             UserService userService, JwtService jwtService, 
             PasswordEncoder passwordEncoder, UserMapper userMapper,
-            RedisService redisService) {
+            RedisService redisService, 
+            @Qualifier("cryptoExecutor") ExecutorService cryptoExecutor) {
         this.userService = userService;
         this.jwtService = jwtService;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+        this.cryptoExecutor = cryptoExecutor;
     }
     
     private AuthResponse generateAuthResponse(User user, boolean rememberUser) {
@@ -48,7 +53,11 @@ public class AuthService {
         User found = req.identifier().contains("@") ? 
                 userService.loadUserByEmail(req.identifier()) : 
                 userService.loadUserByUsername(req.identifier());
-        if (!passwordEncoder.matches(req.password(), found.getPassword())) {
+        
+        boolean matches = CompletableFuture.supplyAsync(() -> 
+            passwordEncoder.matches(req.password(), found.getPassword()), cryptoExecutor
+        ).join();
+        if (!matches) {
             throw new BadCredentialsException("invalid credentials");
         }
         return generateAuthResponse(found, req.rememberUser());
@@ -64,6 +73,7 @@ public class AuthService {
         User user = userService.loadUserById(userId);
         String accessToken = jwtService.generateAccessToken(userId, user.getAuthorities());
         String newRefreshToken = jwtService.generateRefreshToken(userId, tokenTTL);
+        jwtService.blacklistToken(refreshToken, true);
         return new AuthResponse(newRefreshToken, accessToken, tokenTTL, userMapper.toDto(user));
     }
     
