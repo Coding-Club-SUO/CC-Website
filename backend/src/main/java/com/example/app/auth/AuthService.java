@@ -1,19 +1,21 @@
 package com.example.app.auth;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
 import com.example.app.auth.dto.AuthResponse;
 import com.example.app.auth.dto.LoginRequest;
 import com.example.app.auth.dto.RegisterRequest;
 import com.example.app.redis.RedisService;
 import com.example.app.user.UserService;
 import com.example.app.user.dto.UserCreate;
-import com.example.app.user.exceptions.BadCredentialsException;
 import com.example.app.user.entity.User;
+import com.example.app.user.exceptions.BadCredentialsException;
 import com.example.app.user.mappers.UserMapper;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
 
 @Service
 public class AuthService {
