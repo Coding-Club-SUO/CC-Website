@@ -24,10 +24,14 @@ public class SecurityConfig {
 
     private final JwtFilter jwtFilter;
     private final RequestLoggingFilter requestLoggingFilter;
+    private final RateLimitingFilter rateLimitingFilter;
 
-    public SecurityConfig(JwtFilter jwtFilter, RequestLoggingFilter requestLoggingFilter) {
+    public SecurityConfig(
+            JwtFilter jwtFilter, RequestLoggingFilter requestLoggingFilter,
+            RateLimitingFilter rateLimitingFilter) {
         this.jwtFilter = jwtFilter;
         this.requestLoggingFilter = requestLoggingFilter;
+        this.rateLimitingFilter = rateLimitingFilter;
     }
 
     @Bean
@@ -52,11 +56,12 @@ public class SecurityConfig {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/v1/auth/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/v1/resources").permitAll()
-                .anyRequest().authenticated()
-            ).addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class
-            ).addFilterBefore(requestLoggingFilter, UsernamePasswordAuthenticationFilter.class);
+                .anyRequest().authenticated())
+            .addFilterBefore(rateLimitingFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(requestLoggingFilter, RateLimitingFilter.class)
+            .addFilterBefore(jwtFilter, RequestLoggingFilter.class);
 
         return http.build();
     }
