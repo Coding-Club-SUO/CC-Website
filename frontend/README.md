@@ -1,75 +1,38 @@
-# React + TypeScript + Vite
+# CSCU Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The Next.js (App Router, TypeScript) frontend for the Computer Science Course Union website at UBC Okanagan.
 
-Currently, two official plugins are available:
+## Routes
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+| Route | Page |
+| --- | --- |
+| `/` | CSCU club homepage (`src/views/homepage`) |
+| `/resourcehub` | Resource Hub landing page (`src/views/resourcehub`) |
+| `/resources` | Course resources list |
+| `/events` | Events calendar and archive timeline |
+| `/about/vision`, `/about/get-involved`, `/about/team` | About CSCU, Get Involved, Team |
+| `/login` | Login (in development) |
 
-## React Compiler
+Site copy, links and placeholder events live in `src/content/`. Global theme colours (dark and light) are CSS variables in `src/app/globals.css`.
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+## Scripts
 
-Note: This will impact Vite dev & build performances.
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
+npm run dev     # development server with hot reload
+npm run build   # production build (standalone output)
+npm run lint
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+The app needs Redis for its page cache (`cache-handler.js`) and the backend API (`API_BASE_URL`). Easiest is to run the whole stack from the repository root with `docker compose up --build`.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Docker
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+`Dockerfile` has two targets:
+
+```bash
+docker build --target dev  -t cscu-frontend:dev  .   # next dev, file watching
+docker build --target prod -t cscu-frontend:prod .   # compiled standalone server, non-root
 ```
+
+See the root [README](../README.md) for the full dev and production setup.

@@ -1,5 +1,5 @@
 "use client"
-
+//Legacy after transition from representation of Coding Club to CSCU
 import { useEffect } from 'react'
 
 // Instagram's embed.js attaches this global object when it loads.

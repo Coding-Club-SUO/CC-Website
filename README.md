@@ -1,67 +1,41 @@
-# Coding Club Resource Hub
+# CSCU Website
 
-The Coding Club Resource Hub is a centralized platform for hosting student made and open-source course resources, worksheets, and academic discussions for Computer Science, Mathematics, Physics, and Statistics students.
+The website of the **Computer Science Course Union (CSCU)** at UBC Okanagan: a department-backed hub for Computer Science and Data Science students, run by students.
 
-The project is developed by the Coding Club as a collaborative software engineering initiative. Students contribute to the platform as part of a real-world development team, gaining experience with modern full-stack technologies while building tools that benefit the university community.
+The site has two parts:
+
+- **Club homepage** (`/`): who CSCU is, its history and direction, events, and how to get involved.
+- **Resource Hub** (`/resourcehub`, `/resources`): a central place for COSC, MATH, PHYS, and STAT course resources such as past exams and student-made worksheets.
+
+The project is built by CSCU members as a collaborative software engineering initiative, giving students experience with a real full-stack codebase while building tools for the university community.
+
+CSCU is being restructured as a department-backed initiative in partnership with the UBC Okanagan Department of Computer Science. That work is still in progress.
 
 ---
 
 ## Features
 
-- Blog for CMPS student opportunities on campus.
+- Club homepage with first-visit animations, About, Get Involved, Team and Events pages (calendar plus a seasonal archive timeline).
 - Centralized repository for COSC, MATH, PHYS, and STAT course resources.
-- Past exams and student-created worksheets.
-- Discussion pages for courses and topics.
-- Authentication system for CSCU members and online tutoring services.
-- Faculty research pages highlighting research interests and opportunities.
-- Event and announcement pages for Coding Club, CSCU, and Girls in Tech (GIT).
+- Light and dark mode.
+- Authentication for CSCU members (login page is still in development).
 
 ---
 
 ## Tech Stack
 
-The platform is built using Spring Boot + Vite(React).
-
-### Backend
-
-- **Gradle**
-- **Spring Boot**
-- **Java**
-- **PostgreSQL**
-
-The backend provides a REST API that handles authentication, and resource management.
-
-### Frontend
-
-- **Vite**
-- **TypeScript**
-- **React**
-
-Vite provides a fast development environment and optimized production builds for the frontend application.
-
-### Database
-
-- **PostgreSQL**
-
-PostgreSQL is used to store user accounts, course resources, discussion posts, and metadata associated with uploaded files.
-
----
-
-## Architecture
+| Layer | Technology |
+| --- | --- |
+| Frontend | Next.js (App Router), React, TypeScript |
+| Backend | Spring Boot, Java 25, Gradle |
+| Database | PostgreSQL (Flyway migrations) |
+| Cache | Redis (shared Next.js page cache) |
+| File storage | SeaweedFS (S3 API) |
+| Containers | Docker, Docker Compose |
 
 ```
-Browser
-↓
-Frontend (Vite + React + TypeScript)
-↓
-Backend API (Gradle + Spring Boot + Java)
-↓
-PostgreSQL Database
+Browser -> Frontend (Next.js) -> Backend API (Spring Boot) -> PostgreSQL / Redis / SeaweedFS
 ```
-
-TODO: Replace this with an image
-
-Uploaded documents such as past exams and worksheets are stored on the server, with metadata stored in the database.
 
 ---
 
@@ -69,61 +43,27 @@ Uploaded documents such as past exams and worksheets are stored on the server, w
 
 ```
 CC-Website/
-│
-├── .github/workflows
-│ ├── docker-image.yml                  # Docker build and testing workflow
-│ ├── gradle.yml                        # Backend build and testing workflow
-│ └── node.js.yml                       # Frontend build and testing workflow
-│
-├── backend/
-│ ├── gradle/wrapper/
-│ │ ├── gradle-wrapper.jar
-│ │ └── gradle-wrapper.properties
-│ │
-│ ├── src/
-│ │ ├── main/
-│ │ │ ├── java/com/example/app
-│ │ │ │ ├── config/                     # Reuseable backend logic (security, beans, etc...)
-│ │ │ │ ├── controller/                 # Routes
-│ │ │ │ ├── model/                      # Classes and object interfaces
-│ │ │ │ ├── repository/                 # Data access layer
-│ │ │ │ ├── service/                    # Main backend logic
-│ │ │ │ └── SpringAppApplication.java   # Main Spring application
-│ │ │ │
-│ │ │ └── resources/
-│ │ │   ├── static/
-│ │ │   ├── templates/
-│ │ │   └── application.properties      # Environment variable config
-│ │ │
-│ │ └── test/java/com/example/app       # Testing
-│ │
-│ ├── .gitattributes
-│ ├── .gitignore
-│ ├── build.gradle
-│ ├── dockerfile
-│ ├── gradlew
-│ ├── gradlew.bat
-│ └── settings.gradle
-│
-├── frontend/
-│ ├── src/
-│ │ ├── assets/          # Static assets
-│ │ ├── components/      # React components
-│ │ ├── pages/           # Client-facing webpages
-│ │ ├── App.tsx          # Main App component
-│ │ └── main.tsx         # React entry point
-│ │
-│ ├── index.html
-│ ├── Dockerfile
-│ ├── package.json
-│ ├── tsconfig.json
-│ ├── eslint.config.js
-│ └── vite.config.ts     # Build configuration
-│
-├── docker-compose.yml   # Multi-container setup
-├── README.md
-├── LICENSE
-└── .gitignore
+├── .github/workflows/        # CI: docker, gradle, node
+├── backend/                  # Spring Boot API
+│   ├── src/main/java/com/example/app
+│   ├── src/main/resources/   # application.properties, application-prod.properties, db/migrations
+│   ├── Dockerfile            # dev and prod targets
+│   └── build.gradle
+├── frontend/                 # Next.js app
+│   ├── src/app/              # Routes (/, /resourcehub, /resources, /events, /about/*, /login)
+│   ├── src/views/
+│   │   ├── homepage/         # CSCU club homepage
+│   │   ├── resourcehub/      # Resource Hub landing page
+│   │   ├── resourcepage/     # Course resources list
+│   │   ├── eventspage/       # Calendar and archive
+│   │   └── aboutpage/        # About, Get Involved, Team
+│   ├── src/content/          # Site copy, links, events (placeholder data)
+│   ├── src/components/       # Navbar, Footer, theme toggle
+│   └── Dockerfile            # dev and prod targets
+├── infrastructure/           # PostgreSQL seed, SeaweedFS config
+├── docker-compose.yml        # Development stack (live reload)
+├── docker-compose.prod.yml   # Production overrides
+└── .env.example
 ```
 
 ---
@@ -132,139 +72,87 @@ CC-Website/
 
 ### Prerequisites
 
-- Node.js(v20.x or v22.x)
-- Java Open JDK v25.0.2
 - Docker and Docker Compose
-- npm
+- Node.js 20+ and Java 25 (only if running outside Docker)
 
-### Development
-
-Clone the repository:
+### Setup
 
 ```bash
-    git clone https://github.com/Coding-Club-SUO/CC-Website.git
-    cd CC-Website
+git clone https://github.com/Coding-Club-SUO/CC-Website.git
+cd CC-Website
+cp .env.example .env     # then fill in the values
 ```
 
-Once cloned depending on your role cd into the appropriate folder:
-
-```bash
-    cd backend # if you're working on backend.
-    cd frontend # if you're working on frontend.
-```
-
-Open `application.properties` and fill in the required values.
-
-IMPORTANT: The main branch is protected so pushes have to be made on seperate branches before being merged into the main branch via pull requests. A pull-request must be approved before being merged.
-
-## Running and Testing
-
-For the backend:
-
-```bash
-cd backend
-./gradlew build         # This will run all the tests and attempt to re-build the application
-./gradlew bootRun       # This will run the spring application
-```
-
-For the frontend:
-
-```bash
-cd frontend
-npm run dev             # This will run the vite application
-```
-
-IMPORTANT: The frontend relies on the backend to function correctly. For proper testing and operation, run them simultaneously in separate terminals, one for the frontend and one for the backend.
-
-## Deployment
-
-### Step 1: Install Docker
-
-Docker is a container that holds all our code and dependencies so it runs the same way everywhere.
-
-**For Windows or Mac:**
-
-1. Go to https://www.docker.com/products/docker-desktop
-2. Download Docker Desktop
-3. Install it and restart your computer
-4. Open a terminal and check it worked:
-   ```bash
-   docker --version
-   docker-compose --version
-   ```
-
-**For Linux:**
-
-```bash
-sudo apt-get update
-sudo apt-get install docker.io docker-compose
-sudo usermod -aG docker $USER
-newgrp docker
-```
-
-### Step 2: Start Everything
-
-```bash
-docker-compose up --build
-```
-
-This command builds the Docker images and starts all the services. You'll see a bunch of text scrolling - that's normal.
-
-### Step 3: Open It Up
-
-Once you see "Application startup complete" in the logs, open your browser and go to:
-
-- **Frontend**: http://localhost:5173
-- **Backend**: http://localhost:8080
+The `main` branch is protected. Push to a separate branch and open a pull request; it must be approved before merging.
 
 ---
 
-## Common Docker Commands
+## Development (Docker)
 
-### Start the system
+Development images watch for file changes: the source folders are mounted into the containers.
 
 ```bash
-# See all the logs in your terminal
-docker-compose up
-
-# Run it in the background
-docker-compose up -d
-
-# Rebuild everything from scratch
-docker-compose up --build
+docker compose up --build
 ```
 
-### Stop the system
+- **Frontend** (`cscu-frontend:dev`): `next dev` with hot reload, at http://localhost:3000 (`NEXT_PORT`).
+- **Backend** (`cscu-backend:dev`): Gradle recompiles on save and Spring Boot DevTools restarts the app, at http://localhost:8000 (`SPRING_PORT`).
+- Redis, PostgreSQL and SeaweedFS start alongside.
+
+If you change dependencies, rebuild with `docker compose up --build -V` so the frontend `node_modules` volume is refreshed.
+
+### Without Docker
 
 ```bash
-# Stop everything
-docker-compose down
-
-# Stop and delete everything (this deletes your data!)
-docker-compose down -v
+cd backend && ./gradlew bootRun     # API (needs Postgres, Redis, SeaweedFS running)
+cd frontend && npm install && npm run dev
+cd backend && ./gradlew build       # build and run backend tests
+cd frontend && npm run lint
 ```
 
-### Check what's happening
+The frontend depends on the backend; run both together.
+
+---
+
+## Production (Docker)
+
+Production images do not watch files, contain no dev tooling, and run as a non-root user.
 
 ```bash
-# See all logs from both backend and frontend
-docker-compose logs
-
-# Follow backend logs as they happen
-docker-compose logs -f backend
-
-# Follow frontend logs
-docker-compose logs -f frontend
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
 ```
 
-### Restart things
+- **Frontend** (`cscu-frontend:prod`): compiled Next.js standalone server with a healthcheck.
+- **Backend** (`cscu-backend:prod`): JRE plus the built JAR, running with `JAVA_ENV=prod` (see `application-prod.properties`: SQL logging off, sample data seeding off, graceful shutdown). Requests use virtual threads, so one instance serves many concurrent users.
+- **Multiple users / scaling:** run more copies, e.g. `--scale frontend=3`, behind a load balancer. Frontend replicas share the rendered-page cache through Redis. Remove the fixed host port mapping when scaling.
+- **Redis is required** by the frontend; pages fail without it.
+
+Build the images individually:
 
 ```bash
-# Restart everything
-docker-compose restart
+docker build --target dev  -t cscu-frontend:dev  ./frontend
+docker build --target prod -t cscu-frontend:prod ./frontend
+docker build --target dev  -t cscu-backend:dev   ./backend
+docker build --target prod -t cscu-backend:prod  ./backend
+```
 
-# Just restart the backend
-docker-compose restart backend
+Before a real deployment, replace every placeholder secret in `.env` and review `application.properties` (for example the dev `spring.security.user.password` and the SeaweedFS public endpoint).
+
+---
+
+## Useful Docker Commands
+
+```bash
+docker compose up -d                 # run in the background
+docker compose down                  # stop everything
+docker compose down -v               # stop and delete data volumes (deletes your data!)
+docker compose logs -f backend       # follow backend logs
+docker compose logs -f frontend      # follow frontend logs
+docker compose restart backend       # restart one service
 ```
 
 ---
+
+## License
+
+See [LICENSE](LICENSE).

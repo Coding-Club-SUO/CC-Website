@@ -2,7 +2,17 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import { jwtDecode } from 'jwt-decode'
 
+const COMING_SOON_PATHS = ['/login', '/resources']
+
+function isComingSoon(pathname: string): boolean {
+    return COMING_SOON_PATHS.some(p => pathname === p || pathname.startsWith(`${p}/`))
+}
+
 export async function proxy(request: NextRequest) {
+    if (process.env.NODE_ENV === 'production' && isComingSoon(request.nextUrl.pathname)) {
+        return NextResponse.redirect(new URL('/coming-soon', request.url))
+    }
+
     const accessToken = request.cookies.get('access_token')?.value
     const refreshToken = request.cookies.get('refresh_token')?.value
 

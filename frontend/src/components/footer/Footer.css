@@ -1,0 +1,130 @@
+.footer {
+  margin-top: 4rem;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+}
+
+.footer-inner {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 1.5rem;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 2rem;
+}
+
+.footer-logo-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.footer-logo {
+  height: 36px;
+  width: auto;
+}
+
+.footer-name {
+  font-weight: 700;
+  font-size: 1.15rem;
+}
+
+.footer-blurb {
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-top: 0.75rem;
+  max-width: 28ch;
+}
+
+.footer-col {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-heading {
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 0.25rem;
+}
+
+.footer-link,
+.footer-social {
+  color: var(--text);
+  font-size: 0.93rem;
+  transition: color 0.15s ease;
+}
+
+.footer-link:hover,
+.footer-social:hover {
+  color: var(--accent);
+}
+
+.footer-socials {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.footer-social {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.footer-social.disabled {
+  color: var(--muted);
+  opacity: 0.7;
+  cursor: default;
+}
+
+.footer-social.disabled:hover {
+  color: var(--muted);
+}
+
+.footer-bottom {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 1.5rem;
+  border-top: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+/* Theme toggle (navbar) */
+.theme-toggle {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  width: 2.1rem;
+  height: 2.1rem;
+  cursor: pointer;
+  font-size: 1rem;
+  line-height: 1;
+  transition: border-color 0.15s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+}
+
+@media (max-width: 640px) {
+  .footer-inner {
+    grid-template-columns: 1fr 1fr;
+  }
+  .footer-brand {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .footer-link,
+  .footer-social,
+  .theme-toggle {
+    transition: none;
+  }
+}

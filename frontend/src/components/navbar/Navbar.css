@@ -7,11 +7,20 @@
   border-bottom: 1px solid var(--border);
   position: sticky;
   top: 0;
+  z-index: 20;
 }
 
 .nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
   font-weight: 700;
   font-size: 1.15rem;
+}
+
+.nav-logo {
+  height: 32px;
+  width: auto;
 }
 
 .nav-brand-accent {
@@ -31,6 +40,51 @@
 
 .nav-link:hover {
   color: var(--text);
+}
+
+.nav-links {
+  align-items: center;
+}
+
+.nav-dropdown {
+  position: relative;
+}
+
+.nav-dropdown-toggle {
+  background: none;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.nav-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 0.75rem);
+  left: 0;
+  min-width: 12rem;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.35rem;
+  z-index: 10;
+}
+
+.nav-dropdown-item {
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.nav-dropdown-item:hover {
+  background: var(--surface-hover);
+  color: var(--text);
+}
+
+.nav-dropdown-item.active {
+  color: var(--accent);
 }
 
 /* react-router adds this class automatically to the link of the current page */
