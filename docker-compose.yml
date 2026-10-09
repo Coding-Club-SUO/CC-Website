@@ -6,12 +6,15 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile
+      target: dev
+    image: cscu-backend:dev
     env_file:
       - .env
     ports:
       - "${SPRING_PORT}:8000"
     volumes:
-      - ./backend:/code
+      - ./backend:/app
+      - gradle_cache:/root/.gradle
     depends_on:
       - redis
     restart: always
@@ -21,6 +24,7 @@ services:
     build:
       context: ./frontend
       target: dev
+    image: cscu-frontend:dev
     env_file:
       - .env
     ports:
@@ -130,6 +134,7 @@ services:
       - default
 
 volumes:
+  gradle_cache:
   redis_data:
   pg_data:
   seaweedfs_master_data:

@@ -4,13 +4,21 @@
  */
 package com.example.app.storage.config;
 
-import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+
+import jakarta.annotation.PostConstruct;
 import software.amazon.awssdk.services.s3.S3Client;
-import software.amazon.awssdk.services.s3.model.CORSRule;
-import software.amazon.awssdk.services.s3.model.PutBucketCorsRequest;
 import software.amazon.awssdk.services.s3.model.CORSConfiguration;
+import software.amazon.awssdk.services.s3.model.CORSRule;
+import software.amazon.awssdk.services.s3.model.CreateBucketRequest;
+import software.amazon.awssdk.services.s3.model.HeadBucketRequest;
+import software.amazon.awssdk.services.s3.model.NoSuchBucketException;
+import software.amazon.awssdk.services.s3.model.PutBucketCorsRequest;
+import software.amazon.awssdk.services.s3.model.S3Exception;
+
 
 /**
  *
@@ -19,7 +27,8 @@ import software.amazon.awssdk.services.s3.model.CORSConfiguration;
 @Component
 @Profile("!test")
 public class BucketCorsInitializer {
-    
+
+    private static final Logger log = LoggerFactory.getLogger(BucketCorsInitializer.class);
     private static final String IMAGES_BUCKET = "images";
 
     private final S3Client s3Client;
@@ -30,21 +39,37 @@ public class BucketCorsInitializer {
 
     @PostConstruct
     public void configureCors() {
-        CORSRule rule = CORSRule.builder()
-                .allowedOrigins("http://localhost:3000")
-                .allowedMethods("GET", "HEAD")
-                .allowedHeaders("*")
-                .exposeHeaders("ETag")
-                .maxAgeSeconds(3000)
-                .build();
+        try {
+            ensureBucketExists();
 
-        PutBucketCorsRequest request = PutBucketCorsRequest.builder()
-                .bucket(IMAGES_BUCKET)
-                .corsConfiguration(CORSConfiguration.builder()
-                        .corsRules(rule)
-                        .build())
-                .build();
+            CORSRule rule = CORSRule.builder()
+                    .id("AllowLocalhost3000")
+                    .allowedOrigins("http://localhost:3000")
+                    .allowedMethods("GET", "HEAD")
+                    .allowedHeaders("*")
+                    .exposeHeaders("ETag")
+                    .maxAgeSeconds(3000)
+                    .build();
 
-        s3Client.putBucketCors(request);
+            s3Client.putBucketCors(PutBucketCorsRequest.builder()
+                    .bucket(IMAGES_BUCKET)
+                    .corsConfiguration(CORSConfiguration.builder().corsRules(rule).build())
+                    .build());
+
+            log.info("CORS configured on bucket '{}'", IMAGES_BUCKET);
+        } catch (S3Exception e) {
+            log.warn("Could not configure CORS on bucket '{}': {} (HTTP {})",
+                    IMAGES_BUCKET, e.awsErrorDetails().errorMessage(), e.statusCode());
+            System.out.println("Could not configure CORS on bucket: " + e);
+        }
+    }
+
+    private void ensureBucketExists() {
+        try {
+            s3Client.headBucket(HeadBucketRequest.builder().bucket(IMAGES_BUCKET).build());
+        } catch (NoSuchBucketException e) {
+            s3Client.createBucket(CreateBucketRequest.builder().bucket(IMAGES_BUCKET).build());
+            log.info("Created bucket '{}'", IMAGES_BUCKET);
+        }
     }
 }

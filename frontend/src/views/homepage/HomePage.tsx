@@ -1,111 +1,125 @@
 import './HomePage.css'
 import Link from 'next/link'
 import Image from 'next/image'
-import logo from '../../public/codingclub_ok_logo.jpeg'
-import InstagramEmbed from '../../components/InstagramEmbed'
+import Reveal from './components/Reveal'
+import { LOGO, LINKS, TAGLINE, GET_INVOLVED } from '../../content/site'
 
-const FEATURES = [
-  {
-    title: 'Resource Repository',
-    text: 'A high-performance repository for CS, Math, Physics, and Stats resources.',
-  },
-  {
-    title: 'Forums & Discussion',
-    text: 'Course-specific forums and discussions to encourage peer support.',
-  },
-  {
-    title: 'Clubs, Events & Research',
-    text: 'Info on clubs & events, campus opportunities & advice, and professor research.',
-  },
+const ACTIVITIES = [
+  { title: 'Hackathons', text: "Including BC Hacks, CSCU's hackathon, when students are available to run it." },
+  { title: 'Coding events', text: 'Regular events from Coding Club that build a coding community.' },
+  { title: 'Workshops', text: 'Hands-on sessions, depending on the year and who is running them.' },
+  { title: 'Projects', text: 'Collaborative and open-source projects led by students.' },
 ]
-const SOCIALS = [
-  { label: 'Linktree', 
-    url: 'https://linktr.ee/codingclub.suo',
-    icon: '🔗'
-  },
-  { label: 'Instagram',
-    url: 'https://www.instagram.com/codingclub.ok/',
-    icon: '📸'
-  },
-  {label: 'Campus Portal',
-    url: 'https://campus.hellorubric.com/?s=7801',
-    icon: '🎓'
-  },
-  { label: 'Sign-Up Form', 
-    url: null,
-    icon: '📝'
-  },
-  { label: 'Discord Server',
-    url: 'https://discord.gg/HWXnhqsxe',
-    icon: '💬'
-  }
-]
+
 export default function HomePage() {
   return (
-    <div className="home">
-      <section className="hero">
-        <Image src={logo} className="hero-logo" alt="Coding Club logo" priority />
-        <h1 className="hero-title">Coding Club Resource Hub</h1>
-        <p className="hero-code">// learn. share. build. together.</p>
-        <p className="hero-sub">
-          A central place for COSC, MATH, PHYS, and STAT students to share and find
-          course resources.
-        </p>
-        <Link href="/resources" className="hero-btn">Browse Resources →</Link>
-      </section>
-
-      <section className="features">
-        {FEATURES.map(feature => (
-          <div key={feature.title} className="feature-card">
-            <h3 className="feature-title">{feature.title}</h3>
-            <p className="feature-text">{feature.text}</p>
-          </div>
-        ))}
-      </section>
-
-      <section className="about">
-        <h2 className="about-heading">About the Coding Club</h2>
-        <p className="about-text">
-          The Coding Club at the University of British Columbia Okanagan Campus is a
-          student-led organization that fosters a supportive and collaborative community
-          for anyone passionate about coding — whether you're a beginner or an experienced
-          developer. We host workshops, coding challenges, hackathons, and networking
-          events to help members build technical skills, solve real-world problems, and
-          explore different areas of technology.
-        </p>
-        <p className="about-text">
-          We welcome students from all disciplines. Join us to collaborate, learn, and grow
-          your coding expertise while connecting with like-minded peers.
-        </p>
-      </section>
-            <section className="highlight">
-        <h2 className="highlight-heading">From Our Community</h2>
-        <InstagramEmbed />
-      </section>
-      
-            <section className="socials">
-        <h2 className="socials-heading">Connect With Us</h2>
-        <div className="socials-grid">
-          {SOCIALS.map(social =>
-            social.url ? (
-              <a
-                key={social.label}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-              >
-                <span className="social-icon">{social.icon}</span>
-                {social.label}
-              </a>
-            ) : (
-              <span key={social.label} className="social-link disabled">
-                <span className="social-icon">{social.icon}</span>
-                {social.label} · soon
-              </span>
-            )
-          )}
+    <div className="club">
+      <section className="club-hero">
+        <div className="club-orb club-orb-a" aria-hidden="true" />
+        <div className="club-orb club-orb-b" aria-hidden="true" />
+        <div className="club-grid-bg" aria-hidden="true" />
+        <Image
+          src={LOGO.src}
+          width={LOGO.width}
+          height={LOGO.height}
+          className="club-logo intro intro-1"
+          alt="CSCU logo"
+          priority
+        />
+        <p className="club-eyebrow intro intro-2">UBC Okanagan</p>
+        <h1 className="club-title intro intro-3">
+          Computer Science <span className="club-title-accent">Course Union</span>
+        </h1>
+        <p className="club-lead intro intro-4">{TAGLINE}</p>
+        <div className="club-cta-row intro intro-5">
+          <a href={LINKS.rubric} className="club-btn club-btn-primary" target="_blank" rel="noopener noreferrer">
+            Join on Rubric
+          </a>
+          <Link href="/about/get-involved" className="club-btn">Get Involved</Link>
+          <Link href="/events" className="club-btn">Events</Link>
+          <Link href="/resourcehub" className="club-btn">Resource Hub</Link>
         </div>
+      </section>
+
+      <section className="club-section">
+        <Reveal>
+          <h2 className="club-heading">What we do</h2>
+          <p className="club-sub">
+            Depending on the year, CSCU brings students together through a mix of community activities.
+          </p>
+        </Reveal>
+        <div className="club-cards">
+          {ACTIVITIES.map((item, i) => (
+            <Reveal key={item.title} delay={i * 80}>
+              <div className="club-card">
+                <h3 className="club-card-title">{item.title}</h3>
+                <p className="club-card-text">{item.text}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      <section className="club-section">
+        <Reveal>
+          <div className="club-panel">
+            <h2 className="club-heading">Past and future</h2>
+            <p className="club-text">
+              CSCU has run on year-to-year momentum: resilient in strong years, quieter in others.
+              BC Hacks and Coding Club grew out of that same student energy.
+            </p>
+            <p className="club-text">
+              CSCU is now being restructured, in partnership with the UBC Okanagan Department of
+              Computer Science, into a more sustainable hub for the program. That work is still in progress.
+            </p>
+            <Link href="/about/vision" className="club-link">Read the full story →</Link>
+          </div>
+        </Reveal>
+      </section>
+
+      <section className="club-section" id="get-involved">
+        <Reveal>
+          <h2 className="club-heading">Get involved</h2>
+          <p className="club-sub">{GET_INVOLVED.intro}</p>
+        </Reveal>
+        <div className="club-cards club-cards-3">
+          {GET_INVOLVED.options.map((option, i) => (
+            <Reveal key={option.title} delay={i * 80}>
+              <div className="club-card">
+                <p className="club-kicker">{option.kicker}</p>
+                <h3 className="club-card-title">{option.title}</h3>
+                <a href={option.cta.href} className="club-link" target="_blank" rel="noopener noreferrer">
+                  {option.cta.label} →
+                </a>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal>
+          <p className="club-note">
+            <Link href="/about/get-involved" className="club-link">See details, including executive roles →</Link>
+          </p>
+        </Reveal>
+      </section>
+
+      <section className="club-section" id="community">
+        <Reveal>
+          <div className="club-panel">
+            <h2 className="club-heading">The wider CS community</h2>
+            <p className="club-text">
+              CSCU aims to support the wider ecosystem of CS-related clubs, working alongside the
+              department and other student groups rather than in isolation. Club details are still being
+              compiled here; for now, the Resource Hub has info on clubs and events, and the Discord is
+              the best place to ask.
+            </p>
+            <div className="club-cta-row club-cta-left">
+              <Link href="/resourcehub" className="club-btn club-btn-primary">Visit the Resource Hub</Link>
+              <a href={LINKS.discord} className="club-btn" target="_blank" rel="noopener noreferrer">
+                Join the Discord
+              </a>
+            </div>
+          </div>
+        </Reveal>
       </section>
     </div>
   )

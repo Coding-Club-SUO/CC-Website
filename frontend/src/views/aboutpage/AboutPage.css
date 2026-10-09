@@ -1,0 +1,208 @@
+.about-page {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+}
+
+.about-page-title {
+  font-size: 2.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-page-intro {
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.about-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.about-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem;
+}
+
+.about-card-title {
+  margin-bottom: 0.4rem;
+}
+
+.about-card-role {
+  color: var(--accent);
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+}
+
+.about-card-text {
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.about-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+}
+
+.about-card-para + .about-card-para {
+  margin-top: 0.75rem;
+}
+
+.about-card-action {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.about-card-action:hover {
+  border-color: var(--accent);
+  transform: translateY(-3px);
+}
+
+.about-card-kicker {
+  color: var(--accent);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+
+.about-btn {
+  display: inline-block;
+  margin-top: auto;
+  padding: 0.6rem 1.2rem;
+  background: var(--accent);
+  color: var(--on-accent);
+  font-weight: 600;
+  border-radius: 8px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.about-card-text + .about-btn {
+  margin-top: 1rem;
+}
+
+.about-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(56, 189, 248, 0.25);
+}
+
+.about-btn-ghost {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+.about-roles {
+  margin-top: 1rem;
+}
+
+.about-roles-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  list-style: none;
+  margin: 0.75rem 0;
+}
+
+.about-roles-list li {
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .about-card-action,
+  .about-btn {
+    transition: none;
+  }
+  .about-card-action:hover,
+  .about-btn:hover {
+    transform: none;
+  }
+}
+
+.about-avatar-img {
+  object-fit: cover;
+  display: block;
+}
+
+.about-cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+}
+
+.about-card-title-spaced {
+  margin-top: 1.5rem;
+}
+
+.team-section {
+  margin-top: 2.5rem;
+}
+
+.team-section-title {
+  font-size: 1.5rem;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 2rem 1rem;
+}
+
+.team-member {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.team-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+  margin-bottom: 0.75rem;
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+}
+
+.team-avatar-initials {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.team-member-name {
+  margin-bottom: 0.25rem;
+}

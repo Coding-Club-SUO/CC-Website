@@ -6,6 +6,37 @@
   --muted: #9aa3b7;
   --accent: #38bdf8;
   --border: #262f45;
+  --on-accent: #0b0f19;
+  color-scheme: dark;
+}
+
+:root[data-theme='light'] {
+  --bg: #f6f8fc;
+  --surface: #ffffff;
+  --surface-hover: #eaeff8;
+  --text: #0f172a;
+  --muted: #526078;
+  --accent: #0369a1;
+  --border: #d5dcea;
+  --on-accent: #ffffff;
+  color-scheme: light;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+body,
+.navbar,
+.club-card,
+.about-card,
+.feature-card {
+  transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
 }
 
 * {
@@ -74,4 +105,73 @@ a {
 
 .read-the-docs {
   color: #888;
+}
+
+/* ---- Page entrance animations (all pages except login) ---- */
+/* `backwards` fill (not `both`) so hover transforms still apply afterwards. */
+@keyframes page-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.about-page > *,
+.resources-page > *,
+.home > *,
+.events-hero,
+.events-intro,
+.about-grid > *,
+.about-stack > *,
+.resource-list > *,
+.features > *,
+.event-items > * {
+  animation: page-rise 0.5s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+
+.about-page > :nth-child(2),
+.resources-page > :nth-child(2),
+.home > :nth-child(2),
+.events-intro,
+.about-grid > :nth-child(2),
+.about-stack > :nth-child(2),
+.resource-list > :nth-child(2),
+.features > :nth-child(2),
+.event-items > :nth-child(2) { animation-delay: 0.07s; }
+
+.about-page > :nth-child(3),
+.resources-page > :nth-child(3),
+.home > :nth-child(3),
+.about-grid > :nth-child(3),
+.about-stack > :nth-child(3),
+.resource-list > :nth-child(3),
+.features > :nth-child(3),
+.event-items > :nth-child(3) { animation-delay: 0.14s; }
+
+.about-page > :nth-child(n + 4),
+.resources-page > :nth-child(n + 4),
+.home > :nth-child(n + 4),
+.about-grid > :nth-child(n + 4),
+.about-stack > :nth-child(n + 4),
+.resource-list > :nth-child(n + 4),
+.features > :nth-child(n + 4),
+.event-items > :nth-child(n + 4) { animation-delay: 0.21s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .about-page > *,
+  .resources-page > *,
+  .home > *,
+  .events-hero,
+  .events-intro,
+  .about-grid > *,
+  .about-stack > *,
+  .resource-list > *,
+  .features > *,
+  .event-items > * {
+    animation: none;
+  }
 }

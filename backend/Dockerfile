@@ -1,38 +1,40 @@
-# ── Stage 1: Build ────────────────────────────
-FROM eclipse-temurin:25-jdk-alpine AS builder
+# Two images from one file:
+#   docker build --target dev  -t cscu-backend:dev  ./backend
+#   docker build --target prod -t cscu-backend:prod ./backend
 
-# Set the working directory
+# ---------- Shared: JDK + cached dependencies ----------
+FROM eclipse-temurin:25-jdk-alpine AS base
 WORKDIR /app
-
-# Copy Gradle wrapper and config first (better layer caching)
+# Wrapper and build config first (better layer caching)
 COPY gradlew .
 COPY gradle gradle
-COPY build.gradle .
-COPY settings.gradle .
+COPY build.gradle settings.gradle ./
+RUN chmod +x gradlew && ./gradlew dependencies --no-daemon > /dev/null || true
 
-# Download dependencies before copying source
-RUN ./gradlew dependencies --no-daemon || true
+# ================= DEV IMAGE =================
+# Live reload. docker-compose.yml bind-mounts ./backend at /app. `classes -t`
+# recompiles on every source change and Spring Boot DevTools restarts the app.
+FROM base AS dev
+ENV JAVA_ENV=dev
+EXPOSE 8000
+CMD ["sh", "-c", "sh ./gradlew -t classes -q & exec sh ./gradlew bootRun"]
 
-# Copy the rest of the source code
+# ---------- Build step for prod ----------
+FROM base AS builder
 COPY src src
-
-# Fix permissions
-RUN chmod +x gradlew
-
-# Build the JAR, skipping tests
 RUN ./gradlew bootJar --no-daemon -x test
 
-# ── Stage 2: Run ──────────────────────────────
-FROM eclipse-temurin:25-jre-alpine
-
-# Set the working directory
+# ================= PROD IMAGE =================
+# Just the JRE and the built JAR: no Gradle, no source, no file watching
+# (DevTools is excluded from bootJar). Runs as a non-root user. Request
+# handling uses virtual threads (spring.threads.virtual.enabled), so it
+# serves many concurrent users per instance.
+FROM eclipse-temurin:25-jre-alpine AS prod
 WORKDIR /app
-
-# Copy only the built JAR from the builder stage
-COPY --from=builder /app/build/libs/*.jar app.jar
-
-# Expose the Spring Boot port
-EXPOSE 8080
-
-# Start the Spring Boot app
+ENV JAVA_ENV=prod \
+    JAVA_TOOL_OPTIONS="-XX:MaxRAMPercentage=75 -XX:+ExitOnOutOfMemoryError"
+RUN addgroup -S app && adduser -S app -G app
+COPY --from=builder --chown=app:app /app/build/libs/*.jar app.jar
+USER app
+EXPOSE 8000
 CMD ["java", "-jar", "app.jar"]

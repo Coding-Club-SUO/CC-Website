@@ -1,0 +1,25 @@
+# Production overrides. Use together with the base file:
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up --build -d
+# The base file stays the dev setup (live reload, source bind mounts).
+services:
+  frontend:
+    build:
+      context: ./frontend
+      target: prod
+    image: cscu-frontend:prod
+    environment:
+      NODE_ENV: production
+    # `!reset` clears the base file's dev bind mounts.
+    volumes: !reset []
+    restart: unless-stopped
+    # Scale for more concurrent users, e.g. `--scale frontend=3` behind a
+    # reverse proxy / load balancer. Replicas share the Redis page cache.
+    # (Remove the fixed host port from `ports` when scaling with replicas.)
+
+  backend:
+    build:
+      context: ./backend
+      target: prod
+    image: cscu-backend:prod
+    volumes: !reset []
+    restart: unless-stopped
