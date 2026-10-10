@@ -153,6 +153,21 @@ docker compose restart backend       # restart one service
 
 ---
 
+## Troubleshooting
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| `port is already allocated` on 3000 or 8080 | Another process is using the port | Stop the conflicting process (`lsof -i :3000`) or change the port mapping in `docker-compose.yml` |
+| `FATAL: password authentication failed` from PostgreSQL | `.env` credentials don't match what the container was initialized with | Run `docker compose down -v` to delete the old volume, then `docker compose up` |
+| `Connection refused` to Redis or PostgreSQL | Dependent containers haven't started yet | Run `docker compose up` (without `-d`) to check logs; ensure `depends_on` is set |
+| Frontend builds but shows a blank page | Backend API is unreachable from the browser | Verify `NEXT_PUBLIC_API_URL` in `.env` points to `http://localhost:8080` |
+| SeaweedFS uploads fail with 403 | S3 credentials in `.env` don't match the SeaweedFS config | Check that `SEAWEEDFS_ACCESS_KEY` and `SEAWEEDFS_SECRET_KEY` match across services |
+| `docker compose` not recognized | Older Docker version uses `docker-compose` (hyphenated) | Install Docker Compose V2 or use `docker-compose` instead |
+| Flyway migration errors on startup | Database schema is out of date or conflicts with a dirty migration | Run `docker compose down -v` to reset the database, then restart |
+| `node_modules` permission errors | Volumes mapped from host conflict with container file ownership | Delete `node_modules` locally and let the container install dependencies |
+
+---
+
 ## License
 
 See [LICENSE](LICENSE).
