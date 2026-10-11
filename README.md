@@ -85,6 +85,19 @@ cp .env.example .env     # then fill in the values
 
 The `main` branch is protected. Push to a separate branch and open a pull request; it must be approved before merging.
 
+### Environment variables
+
+Before running the application, copy `.env.example` to `.env`. The `.env.example` file contains detailed comments explaining every variable, its consumption by frontend or backend services, expiration units (in seconds for `*_EXP`), and local development defaults.
+
+- **Local vs Production:** Local defaults work out of the box with Docker Compose. For production deployments, replace all placeholder credentials (`POSTGRES_PASSWORD`, `REDIS_PASSWORD`, `S3_SECRET_KEY`, `ACCESS_SECRET`, `REFRESH_SECRET`) with secure values.
+- **Generating JWT Secrets:** Generate strong, unique Base64-encoded values for `ACCESS_SECRET` and `REFRESH_SECRET` using OpenSSL:
+  ```bash
+  openssl rand -base64 32
+  ```
+  Copy the generated strings into your `.env` file. Ensure `ACCESS_SECRET` and `REFRESH_SECRET` use distinct keys.
+- **Security Warning:** Never commit `.env` or real production secrets to Git. The `.env` file is listed in `.gitignore` to prevent accidental commits.
+- **Troubleshooting:** If the backend fails to connect to PostgreSQL or Redis on startup, verify that `.env` has been created from `.env.example` and that service hostnames (`postgres`, `redis`) match your environment.
+
 ---
 
 ## Development (Docker)
@@ -150,6 +163,13 @@ docker compose logs -f backend       # follow backend logs
 docker compose logs -f frontend      # follow frontend logs
 docker compose restart backend       # restart one service
 ```
+
+---
+
+## Community
+
+- [Code of Conduct](CODE_OF_CONDUCT.md)
+- [Security Policy](SECURITY.md)
 
 ---
 
