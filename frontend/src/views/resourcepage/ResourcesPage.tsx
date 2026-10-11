@@ -1,14 +1,13 @@
 "use client"
-
 import './ResourcesPage.css'
 import { useState } from 'react'
 import type { Resource } from '../../api/resources/resources'
 
 const COURSES = ['All', 'COSC', 'MATH', 'PHYS', 'STAT']
 
-export default function ResourcesPage({ resources }: { resources: Resource[] }) {
+export default function ResourcesPage({ resources, loadFailed = false }: { resources: Resource[], loadFailed?: boolean }) {
   const [selectedCourse, setSelectedCourse] = useState('All')
-
+  
   const filtered = selectedCourse === 'All'
     ? resources
     : resources.filter(r => r.course.startsWith(selectedCourse))
@@ -19,7 +18,7 @@ export default function ResourcesPage({ resources }: { resources: Resource[] }) 
       <p className="resources-subtitle">
         Past exams, worksheets, and study materials shared by students.
       </p>
-
+      
       <div className="filter-bar">
         {COURSES.map(course => (
           <button
@@ -32,7 +31,12 @@ export default function ResourcesPage({ resources }: { resources: Resource[] }) 
         ))}
       </div>
 
-      {filtered.length === 0 ? (
+      {loadFailed ? (
+        <div className="empty-state">
+          <p className="empty-title">We couldn't load resources right now.</p>
+          <p className="empty-sub">Please try again later.</p>
+        </div>
+      ) : filtered.length === 0 ? (
         <div className="empty-state">
           <p className="empty-title">No resources uploaded yet</p>
           <p className="empty-sub">Be the first to share something for this course.</p>
@@ -45,9 +49,10 @@ export default function ResourcesPage({ resources }: { resources: Resource[] }) 
                 <span className="course-tag">{resource.course}</span>
                 <h3 className="resource-title">{resource.title}</h3>
                 <p className="resource-meta">
-                  Uploaded by {resource.uploader} · {new Date(resource.uploadedAt).toLocaleDateString()}
+                  Uploaded by {resource.uploader} • {new Date(resource.uploadedAt).toLocaleDateString()}
                 </p>
               </div>
+              
               {resource.downloadUrl && resource.downloadUrl !== '#' ? (
                 <a
                   href={resource.downloadUrl}

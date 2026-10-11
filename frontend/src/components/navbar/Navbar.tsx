@@ -18,10 +18,16 @@ const ABOUT_LINKS = [
 export default function Navbar() {
     const pathname = usePathname()
     const [aboutOpen, setAboutOpen] = useState(false)
+    const [prevPathname, setPrevPathname] = useState(pathname)
     const dropdownRef = useRef<HTMLDivElement>(null)
 
-    // Close on route change, outside click, or Escape
-    useEffect(() => setAboutOpen(false), [pathname])
+    // Close on route change by adjusting state during render (React recommended pattern)
+    if (pathname !== prevPathname) {
+        setPrevPathname(pathname)
+        setAboutOpen(false)
+    }
+
+    // Close on outside click, or Escape
     useEffect(() => {
         const onClick = (e: MouseEvent) => {
             if (!dropdownRef.current?.contains(e.target as Node)) setAboutOpen(false)
@@ -29,6 +35,7 @@ export default function Navbar() {
         const onKey = (e: KeyboardEvent) => {
             if (e.key === 'Escape') setAboutOpen(false)
         }
+
         document.addEventListener('mousedown', onClick)
         document.addEventListener('keydown', onKey)
         return () => {
@@ -45,7 +52,6 @@ export default function Navbar() {
             </Link>
             <div className="nav-links">
                 <Link href="/" className={`nav-link${pathname === '/' ? ' active' : ''}`}>Home</Link>
-
                 <div className="nav-dropdown" ref={dropdownRef}>
                     <button
                         type="button"
@@ -54,7 +60,7 @@ export default function Navbar() {
                         aria-expanded={aboutOpen}
                         onClick={() => setAboutOpen(open => !open)}
                     >
-                        About <span aria-hidden="true">▾</span>
+                        About <span aria-hidden="true"> </span>
                     </button>
                     {aboutOpen && (
                         <div className="nav-dropdown-menu">
@@ -63,6 +69,7 @@ export default function Navbar() {
                                     key={link.href}
                                     href={link.href}
                                     className={`nav-dropdown-item${pathname === link.href ? ' active' : ''}`}
+                                    onClick={() => setAboutOpen(false)}
                                 >
                                     {link.label}
                                 </Link>
@@ -70,7 +77,6 @@ export default function Navbar() {
                         </div>
                     )}
                 </div>
-
                 <Link href="/events" className={`nav-link${pathname.startsWith('/events') ? ' active' : ''}`}>Events</Link>
                 <Link href="/resourcehub" className={`nav-link${pathname.startsWith("/resourcehub") || pathname.startsWith("/resources") ? " active" : ""}`}>Resource Hub</Link>
                 <ThemeToggle />
