@@ -122,7 +122,7 @@ export const CONTRIBUTE = {
   currentTitle: 'Current project members',
   pastTitle: 'Past project members',
   // Placeholder names; replace with real project members.
-  current: ['Hakim Rashid'],
+  current: ['Hakim Rashid', 'AbdulHaady Oludare'],
   past: ['Krish Khullar', 'Janhvi'],
 }
 
